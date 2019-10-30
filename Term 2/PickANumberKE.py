@@ -40,11 +40,13 @@ def end(guess, randNum):
         print("Really?")
         time.sleep(1)
         print("Get a life.")
+        quit()
     else:
         print("Too bad. You ran out of tries. The number was " + str(randNum) + ".")
         print("Better luck next time.")
         time.sleep(2)
         print("You know, I really hope that you don't actually enjoy this type of thing.")
+        quit()
 
 # Get the guesses from the user and determine if they are correct or not
 def getGuesses(rmin, rmax, maxTries):
@@ -96,6 +98,12 @@ def custom():
                 # If the input is a number, convert it to an integer
                 if customMax.isdigit():
                     customMax = int(customMax)
+                    if customMax < customMin:
+                        print("Your maximum number can not be less than your minimum number.")
+                        continue
+                    elif customMax == customMin:
+                        print("Your maximum and minimum can not be equal.")
+                        continue
                     while True:
                         # Get the custom number of tries
                         customTries = input("Number of tries: ")
@@ -143,7 +151,16 @@ def menu():
     elif choice == "4":
         custom()
     elif choice == "5":
-        quit()
+        print("Are you sure you want to quit? [y/n]")
+        quitConf = input(": ")
+            while True:
+                if quitConf.lower() == "y":
+                    quit()
+                elif quitConf.lower() == "n":
+                    menu()
+                else:
+                    print("That is not a valid choice.")
+                    continue
     elif choice == "6":
         extreme()
     else:

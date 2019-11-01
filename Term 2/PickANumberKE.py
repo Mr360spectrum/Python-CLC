@@ -25,6 +25,12 @@ def getInput(rmin, rmax):
             print("That is not a valid guess.")
             continue
 
+def compGetInput(rmin, rmax):
+    while True:
+        print("Please pick a number between ", rmin, " and ", rmax, ":", sep = "")
+        compGuess = random.randint(rmin, rmax + 1)
+        return compGuess
+
 # Get a random number within the given range
 def getRandomNumber(rmin, rmax):
     randInt = random.randint(rmin, rmax)
@@ -48,6 +54,26 @@ def end(guess, randNum):
         print("You know, I really hope that you don't actually enjoy this type of thing.")
         quit()
 
+def compEnd(compGuess, randNum):
+    if compGuess == randNum:
+        print("Oh boy. The computer guessed it.")
+        time.sleep(1.5)
+        print("Exciting, isn't it?")
+        time.sleep(2)
+        print("But watching a computer do your bidding just for some entertainment?")
+        time.sleep(2)
+        print("Sickening.")
+        quit()
+    else:
+        print("Too bad. Looks like the computer was stupid today. The number was ", randNum, ".", sep="")
+        time.sleep(2)
+        print("I hope you were satisfied with this.")
+        time.sleep(1.5)
+        print("You know, having fun watching a computer randomly guess a number over and over again?")
+        time.sleep(2)
+        print("You're sick.")
+        quit()
+
 # Get the guesses from the user and determine if they are correct or not
 def getGuesses(rmin, rmax, maxTries):
     tries = 0
@@ -64,6 +90,34 @@ def getGuesses(rmin, rmax, maxTries):
         guess = getInput(rmin, rmax)
         tries = tries + 1
     end(guess, randNum)
+
+def compGetGuesses(rmin, rmax, maxTries):
+    tries = 0
+    randNum = getRandomNumber(rmin, rmax)
+    compGuess = -1
+    tries = tries + 1
+    guessed = []
+    while compGuess != randNum and tries < maxTries:
+        while True:
+            compGuess = getRandomNumber(rmin, rmax)
+            if compGuess in guessed:
+                continue
+            else:
+                break
+        guessed.append(compGuess)
+        print(compGuess)
+        if compGuess > randNum:
+            print("Too high. Try guessing lower.")
+            compGuess = getRandomNumber(rmin, compGuess - 1)
+        elif compGuess == randNum:
+            break
+        else:
+            print("Too low. Try guessing higher.")
+            compGuess = getRandomNumber(compGuess + 1, rmax)
+            tries = tries + 1
+        time.sleep(0.5)
+    print(compGuess)
+    compEnd(compGuess, randNum)
 
 # Declare the easy mode
 def easy():
@@ -121,7 +175,44 @@ def custom():
         else:
             print("That is not a valid choice")
             continue
-# Declare the hidden extreme mode
+
+def comp():
+    # Make the if statement run again if an invalid input is given
+    while True:
+        # Get the custom minimum
+        compMin = input("Minimum: ")
+        # If the input is a number, convert it to an integer
+        if compMin.isdigit():
+            compMin = int(compMin)
+            while True:
+                # Get the custom maximum
+                compMax = input("Maximum: ")
+                # If the input is a number, convert it to an integer
+                if compMax.isdigit():
+                    compMax = int(compMax)
+                    if compMax < compMin:
+                        print("Your maximum number can not be less than your minimum number.")
+                        continue
+                    elif compMax == compMin:
+                        print("Your maximum and minimum can not be equal.")
+                        continue
+                    while True:
+                        # Get the custom number of tries
+                        compTries = input("Number of tries: ")
+                        # If the input is a number, convert it to an integer
+                        if compTries.isdigit():
+                            compTries = int(compTries)
+                            # Put everything into the getGuesses function
+                            compGetGuesses(compMin, compMax, compTries)
+                        else:
+                            print("That is not a valid choice.")
+                            continue
+                else:
+                    print("That is not a valid choice.")
+                    continue
+        else:
+            print("That is not a valid choice")
+            continue
 def extreme():
     rmin = 1
     rmax = 1000
@@ -138,7 +229,8 @@ def menu():
       2. Medium (1-50)
       3. Hard (1-100)
       4. Custom
-      5. Quit
+      5. Have the computer guess
+      6. Quit
       
       """)
     choice = input(": ")
@@ -151,17 +243,19 @@ def menu():
     elif choice == "4":
         custom()
     elif choice == "5":
+        comp()
+    elif choice == "6":
         print("Are you sure you want to quit? [y/n]")
         quitConf = input(": ")
-            while True:
-                if quitConf.lower() == "y":
-                    quit()
-                elif quitConf.lower() == "n":
-                    menu()
-                else:
-                    print("That is not a valid choice.")
-                    continue
-    elif choice == "6":
+        while True:
+            if quitConf.lower() == "y":
+                quit()
+            elif quitConf.lower() == "n":
+                menu()
+            else:
+                print("That is not a valid choice.")
+                continue
+    elif choice == "7":
         extreme()
     else:
         print("That is not a valid option.")

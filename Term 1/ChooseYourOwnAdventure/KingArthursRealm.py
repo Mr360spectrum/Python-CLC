@@ -200,7 +200,7 @@ def card_p11():
          @@/  |=\  \  |
               \_=\_ \ |
                 \==\ \|\_ 
-             __(\===\(  )\
+             __(\===\(  )\\
             (((~) __(_/   |
                  (((~) \  /
                  ______/ /
@@ -775,7 +775,7 @@ def card21():
     print("""
       Don't just stand there! Do something!""")
 def card22():
-    card_p22()
+    card_p8()
     print("""
       Lightning explodes from your fingertips, and the Ant Queen explodes into a bazillion pieces.
       Amid the confetti of bloodshedand insect parts, there is a slightly sticky shiny goblet.

@@ -68,8 +68,60 @@ def pieces():
 def ask_number(question, low, high):
     response = None
     while response not in range(low, high):
-        response = input(question)
-        if response.isdigit():
-            response = int(response)
+        try:
+            response = int(input(question))
+        except:
+            print("That is not a number.")
     return response
-pieces()
+
+def legal_moves(board):
+    moves = []
+    for square in range(NUM_SQUARES):
+        if board[square] == EMPTY:
+            moves.append(square)
+    return moves
+
+def human_move(board, human):
+    legal = legal_moves(board)
+    move = None
+    while move not in legal:
+        move = ask_number("Where will you move? (1 - 9): ", 0,  NUM_SQUARES) - 1
+        if move not in legal:
+            print("You fool. You absolute moron. Can you not tell what's going on? Get your eyes and brain checked and try again, you know, sometime today.")
+    print("Fine...")
+    return move
+
+def next_turn(turn):
+    if turn == X:
+        return O
+    else:
+        return X
+
+def winner(board):
+    """Determine the game winner"""
+    WAYS_TO_WIN = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+    for row in WAYS_TO_WIN:
+        # Make sure all squares in a combination are filled with the same character
+        if board[row[0]] == board[row[1]] == board[row[2]] != EMPTY:
+            # Winner equals whichever piece is at row[0]
+            winner = board[row[0]]
+            return winner
+    if EMPTY not in board:
+        return TIE
+    return None
+
+def congrat_winner():
+    win = winner(board)
+    if win == TIE:
+        print("Oh, dear. It seems that we have tied. That's only because I messed up two turns ago.")
+    if win == X:
+        print("Congratulations! You win! Although, that's only because you cheated.")
+    elif win == O:
+        print("Just as I have foreseen. You lost. git gud lol")
+
+def comp_player():
+    computer = O
+    
+
+display_board(board)
+congrat_winner()

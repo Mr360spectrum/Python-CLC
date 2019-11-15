@@ -1,6 +1,8 @@
 # Karter Ence
 # Tic Tac Toe
 # 11/7/2019
+import random
+
 X = "X"
 O = "O"
 NUM_SQUARES = 9
@@ -110,7 +112,7 @@ def winner(board):
         return TIE
     return None
 
-def congrat_winner():
+def congrat_winner(board):
     win = winner(board)
     if win == TIE:
         print("Oh, dear. It seems that we have tied. That's only because I messed up two turns ago.")
@@ -119,9 +121,52 @@ def congrat_winner():
     elif win == O:
         print("Just as I have foreseen. You lost. git gud lol")
 
-def comp_player():
-    computer = O
-    
+def comp_move(board, human, comp):
+    # Make a copy of the board
+    board_copy = board[:]
+    # Best positions, in order
+    MOVES1 = (4, 0, 2, 6, 8, 1, 3, 5, 7)
+    MOVES2 = (0, 1, 2, 3, 4, 5, 6, 7, 8)
+    MOVES3 = (0, 2, 6, 8, 4, 1, 3, 5, 7)
+    allMoves = [MOVES1, MOVES2, MOVES3]
+    randMoves = random.choice(allMoves)
+    print("I shall take square number", end=" ")
+    # If computer can win, take that move
+    for move in legal_moves(board):
+        board_copy[move] = comp
+        if winner(board_copy) == comp:
+            print(move + 1)
+            return move
+        board_copy[move] = EMPTY
+    # If human can move, stop them
+    for move in legal_moves(board):
+        board_copy[move] = human
+        if winner(board_copy) == human:
+            print(move + 1)
+            return move
+        board_copy[move] = EMPTY
+    for move in randMoves:
+        if move in legal_moves(board):
+            print(move + 1)
+            return move
 
-display_board(board)
-congrat_winner()
+def game():
+    instructions()
+    comp, human = pieces()
+    board = new_board()
+    turn = X
+    display_board(board)
+    while not winner(board):
+        if turn == human:
+            move = human_move(board, turn)
+            board[move] = human
+            display_board(board)
+            next_turn(turn)
+        else:
+            move = comp_move(board, human, comp)
+            board[move] = comp
+            display_board(board)
+            next_turn(turn)
+    winner(board)
+    congrat_winner(board)
+game()

@@ -69,7 +69,7 @@ def pieces():
 
 def ask_number(question, low, high):
     response = None
-    while response not in range(low, high):
+    while response not in range(low, high + 1):
         try:
             response = int(input(question))
         except:
@@ -154,19 +154,22 @@ def game():
     instructions()
     comp, human = pieces()
     board = new_board()
-    turn = X
+    if human == X:
+        turn = human
+    else:
+        turn = comp
     display_board(board)
     while not winner(board):
         if turn == human:
             move = human_move(board, turn)
             board[move] = human
             display_board(board)
-            next_turn(turn)
+            turn = next_turn(turn)
         else:
             move = comp_move(board, human, comp)
             board[move] = comp
             display_board(board)
-            next_turn(turn)
+            turn = next_turn(turn)
     winner(board)
     congrat_winner(board)
 game()

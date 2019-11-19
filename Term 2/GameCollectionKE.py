@@ -446,6 +446,7 @@ def game_select():
        """)
     while True:
         gameChoice = input(": ")
+        # Make sure that gameChoice is an integer
         try:
             gameChoice = int(gameChoice)
             if (gameChoice > 3) or (gameChoice < 1):

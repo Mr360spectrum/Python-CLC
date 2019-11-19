@@ -124,7 +124,7 @@ def congrat_winner(board):
 def comp_move(board, human, comp):
     # Make a copy of the board
     board_copy = board[:]
-    # Best positions, in order
+    # Best positions, in order to give the computer different difficulties
     MOVES1 = (4, 0, 2, 6, 8, 1, 3, 5, 7)
     MOVES2 = (0, 1, 2, 3, 4, 5, 6, 7, 8)
     MOVES3 = (0, 2, 6, 8, 4, 1, 3, 5, 7)

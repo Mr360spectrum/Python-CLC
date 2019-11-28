@@ -18,4 +18,3 @@ print(a)
 a = mystery(a)
 # Prints "omega"
 print(a)
- 

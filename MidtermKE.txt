@@ -1,0 +1,89 @@
+A Redemption of Intelligence
+The Correct Enclosure
+What type of brackets are used for finding a specific index within a list or tuple?
+Parenthesis
+Double parenthesis
+Square brackets
+Curly brackets
+3
+Square brackets are used like this: list[1]
+Running is Terrible Anyway
+What type of error completely prevents a program from running?
+Syntax error
+Running error
+Exercise error
+Logic error
+1
+A syntax error completely prevents a program from running, as the /program would have no idea what to do when it comes up.
+Repetition is Key (Now Made Easier with Functions!)
+How do you define a function?
+fun():
+define function():
+fun function:
+def function():
+4
+The keyword "def" allows you to define a function.
+That's Funny, it's Spelled the Exact Same Way as Escape
+Which of the following is known as the "escape" character?
+/
+|
+^
+\
+4
+The backslash ("\") is used as the escape character. It allows you to /insert special characters and whitespace characters.
+No Tariffs Here
+What keyword allows you to use certain modules in Python?
+using namespace
+having
+import
+insert
+3
+The "import" keyword allows you to bring different modules into your /program and use them.
+Reddit Does it Better
+What character allows you to put comments into your program?
+!
+#
+comment()
+'
+2
+The hashtag ("#") is used to put comments in your program. Simply /put it at the beginning of the line you want to comment out.
+Failure-Free
+What statements in Python allow you to prevent crashes and make /something else happen in case something fails?
+try-catch statements
+try-except statements
+catch-fail statements
+expected-unexpected statements
+2
+The try-except statements are used to prevent crashes and fatal errors.
+Names are Everything
+Which of the following is an invalid variable name in Python?
+this_one
+N0p3
+M4yb3ThisOne
+4lways
+4
+You cannot begin a variable name with a number.
+Worse than Windows Update
+What is the current major version of Python?
+2
+3
+4
+1
+2
+The current major version of Python is version 3.
+Comparison is our Downfall
+Which of the following is not a comparison operator?
+<
+==
+/
+>=
+3
+The slash ("/") divides. It doesn't compare.
+Ha, Redundancy!
+Which of the following cannot be used in a normal print() statement /without a backslash in front of it?
+\
+n
+t
+%
+1
+The backslash ("\") needs an additional backslash in front of /it in order to be displayed.

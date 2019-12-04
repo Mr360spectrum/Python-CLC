@@ -86,3 +86,75 @@ Which of the following cannot be used in a normal print() statement /without a b
 4. %
 1
 The backslash ("\") needs an additional backslash in front of /it in order to be displayed.
+Band-Aids Don't Fix Bullet Holes... or Repetitive Code
+Which of the following allows you to run the same code multiple /times without copying-and-pasting repeatedly?
+1. Functions
+2. if statements
+3. ALT + F4 (try it!)
+4. ALT + Z
+1
+Functions allow you to use the same code over and over again. /But seriously, ALT + F4 is real fun, try it!
+100 Bad Errors Makes 100 Good Stories
+Which module allows you to use the native debugging tools in Python?
+1. dbg
+2. fix_problems
+3. pdb
+4. There is not debugging module; you just have to suffer
+3
+pdb is the name of the module that contains the native debugging tools.
+All I Know Since Yesterday is Everything has Changed
+Can you run Python 2 programs in Python 3?
+1. Yes
+2. No
+3. Only on Wednesdays
+4. lol doggos are better anyway
+2
+Python 3 is, intentionally, backwards INcompatible.
+We Need a Larger Keychain
+Which of the following is not a keyword in Python?
+1. yield
+2. assert
+3. pass
+4. error
+4
+Error is not a Python keyword.
+Oddly Specific, but OK
+Which of the following generates a random float between 0.0 and 1.0?
+1. random.uniform()
+2. random.random()
+3. random.decimal()
+4. random.float()
+2
+Oddly enough, random.random() automatically generates a value between 0.0 and 1.0 /without needing any additional parameters.
+Call me Bodacious P!
+Why do developers love Python so much?
+1. It allows them to create clean, easy to read code
+2. It's colorful
+3. snek lol
+4. It is a low level language
+1
+Python is easy to learn, and allows for the creation of clean, easy to read code, /more so than with most other popular languages.
+We Have Heard your Cries for Help, and in Time, we will Answer.
+We are not your friend. We are not your enemy. We are your...
+1. Redemption
+2. Frenemy
+3. Weirdmageddon
+4. Salvation
+4
+Don't you... recognize us?
+Stealy, Stealy!
+What will allow you to finally smell like a human?
+1. Bug spray
+2. A shower
+3. An air freshener
+4. Fortnite
+3
+Seriously, just watch Gravity Falls aleady if you haven't.
+A Redemption of Intelligence
+What programming language was this written in?
+1. Pyhton
+2. Java
+3. Scratch
+4. Python
+4
+Please, make sure you spell it correctly.

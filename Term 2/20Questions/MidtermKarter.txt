@@ -110,7 +110,7 @@ Can you run Python 2 programs in Python 3?
 4. lol doggos are better anyway
 2
 Python 3 is, intentionally, backwards INcompatible.
-We Need a Larger Keychain
+We Need a Larger Key Chain
 Which of the following is not a keyword in Python?
 1. yield
 2. assert
@@ -143,13 +143,13 @@ We are not your friend. We are not your enemy. We are your...
 4
 Don't you... recognize us?
 Stealy, Stealy!
-What will allow you to finally smell like a human?
+What will allow you to finally smell like a person?
 1. Bug spray
 2. A shower
 3. An air freshener
 4. Fortnite
 3
-Seriously, just watch Gravity Falls aleady if you haven't.
+Seriously, just watch Gravity Falls already if you haven't.
 A Redemption of Intelligence
 What programming language was this written in?
 1. Pyhton

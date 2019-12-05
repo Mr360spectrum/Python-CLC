@@ -7,6 +7,7 @@ def open_file(fileName, mode):
     """Opens file in the specified mode"""
     try:
         file = open(fileName, mode)
+        print("ah yis")
         return file
     except IOError as e:
         print("Unable to open the file", fileName, "Ending program.\n", e)
@@ -20,6 +21,8 @@ def next_line(file):
     return line
 
 def question_block(file):
+    """Read every part of a question in the text file and return 
+    category, question, answers, correct, and explanation"""
     category = next_line(file)
     question = next_line(file)
     answers = []
@@ -32,4 +35,13 @@ def question_block(file):
     explanation = next_line(file)
     return category, question, answers, correct, explanation
 
-file = open_file("C:\\Users\\karter.ence\\Documents\\Programming\\Python\\Term 2\\20Questions\\MidtermKE.txt", "r")
+def welcome(title):
+    """Welcome the player and get his/her name."""
+    print("\t\tWelcome to the ultimate test of intelligence...\n")
+    print("\t\tThe Python Quiz\n")
+    print("\t\t This test was created by", title, "\n")
+
+def main():
+    file = open_file(file_name, mode)
+
+file = open_file("MidtermKarter.txt", "r")

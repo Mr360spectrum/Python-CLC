@@ -11,7 +11,7 @@ Running is Terrible Anyway
 What type of error completely prevents a program from running?
 1. Syntax error
 2. Running error
-3. Exercise error
+3. Diabetes
 4. Logic error
 1
 A syntax error completely prevents a program from running, as the /program would have no idea what to do when it comes up.
@@ -25,7 +25,7 @@ How do you define a function?
 The keyword "def" allows you to define a function.
 That's Funny, it's Spelled the Exact Same Way as Escape
 Which of the following is known as the "escape" character?
-1. /
+1. ESC
 2. |
 3. ^
 4. \
@@ -75,10 +75,10 @@ Comparison is our Downfall
 Which of the following is not a comparison operator?
 1. <
 2. ==
-3. /
+3. *
 4. >=
 3
-The slash ("/") divides. It doesn't compare.
+The asterisk ("*") multiplies. It doesn't compare.
 Ha, Redundancy!
 Which of the following cannot be used in a normal print() statement /without a backslash in front of it?
 1. \

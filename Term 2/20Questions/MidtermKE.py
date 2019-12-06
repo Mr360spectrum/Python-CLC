@@ -54,7 +54,7 @@ def main():
         print(question)
         print()
         for i in range(len(answers)):
-            print("\t", answers[i])
+            print("\t", i + 1, "-", answers[i])
         userAnswer = input("Choose an answer: ")
         if userAnswer == correct:
             score += 1
@@ -149,9 +149,10 @@ def report_card(name, questions, score):
     elif percentage < 60:
         letter = F
     print(title)
+    print()
+    print()
+    print("\t\t", letter)
     
-    
-
 main()
 
 

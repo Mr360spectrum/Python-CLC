@@ -151,28 +151,12 @@ def report_card(name, questions, score):
     print(title)
     print()
     print()
+    print("\t" + name + ", your letter grade is...")
     print("\t\t", letter)
-    
+    print()
+    print()
+    print("You got", score, "questions correct.")
+    print("You got", incorrectAnswers, "questions wrong.")
+    print("Your percentage is " + str(percentage) + "%.")
+
 main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

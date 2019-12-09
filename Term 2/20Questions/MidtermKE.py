@@ -167,4 +167,6 @@ def report_card(name, questions, score):
     print("You got", incorrectAnswers, "questions wrong.")
     print("Your percentage is " + str(percentage) + "%.")
 
+    write_score(name, percentage)
+
 main()

@@ -80,6 +80,14 @@ def get_file_name():
         else:
             print("You fool. You absolute moron. How dare you assume I'm just gonna let it slide that you entered an invalid file name! You, person, are a disgrace to humanity.\n")
 
+def write_score(name, score):
+    file = open_file("scores.txt", "a+")
+    pair = name + ":    " + score + "\n"
+    line = []
+    line.append(pair)
+    file.writelines(line)
+    file.close()
+
 def report_card(name, questions, score):
     title = """
         ######                                        #####                       

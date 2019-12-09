@@ -151,7 +151,7 @@ def report_card(name, questions, score):
     print(title)
     print()
     print()
-    print("\t" + name + ", your letter grade is...")
+    print("\t" + name + ", your grade is...")
     print("\t\t", letter)
     print()
     print()

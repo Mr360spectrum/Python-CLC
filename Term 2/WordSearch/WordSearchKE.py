@@ -48,11 +48,12 @@ QUESTIONS = ("What type of number in Python allows you to use decimal places?",
              "What function outputs text to the screen?")
 
 def display_puzzle(puzzle):
+    """Displays the word search puzzle with spaces between letters."""
     minIndex = 0
     maxIndex = 20
     for i in range(20):
         for letter in puzzle[minIndex:maxIndex]:
-            print(letter, end=" ")
+            print(letter, end=(" "))
         print()
         minIndex = minIndex + 20
         maxIndex = maxIndex + 20

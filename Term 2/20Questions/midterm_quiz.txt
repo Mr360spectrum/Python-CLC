@@ -1,0 +1,161 @@
+Daniel Pingrey/ Python Mid-Term Quiz 2019/
+Coding/
+1) What is the outcome of this line of code?:/ print("Hello"+"World"+sep=" ")/
+Hello World
+HelloWorld
+World Hello
+H e l l o W o r l d
+1/
+The separator will put a space between the parameters/
+Debugging/
+2) What is wrong with this line of code?:/ print("Hello World!)/
+The print() function doesn't take spaces
+Missing quotation mark
+Missing separator
+Nothing is wrong
+2/
+The print statement parameters needs 2 quotation marks if worded/
+Functions/
+3) Which function will allow you to add something to the end of a list?/
+.attach()
+.link()
+.append()
+.addlist()
+3/
+You use .append() to add something to the end of a list/
+Python/
+4) Where did the creator of Python get the name from?/
+The Brady Bunch
+Monty Python
+Some cartoon
+The hospital logo
+2/
+The creator got the idea from his favorite show, Monty Python/
+Functions/
+5) What function will allow you to add something to the end of a tuple?/
+.attach()
+.link()
+.append(tuple)
+None
+4/
+You cannot edit, or add anything to a tuple while code is running/
+Python/
+6) What year was python created?/
+1812
+1961
+1991
+1738
+3/
+Python was created in 1991/
+Debugging/
+7) What is wrong with this line of code?:/ variableLetter = "H"/ variableNumber = 12/ print(variableLetter+variableNumber)/
+'H' is the wrong letter
+Cannot add strings and integers
+Alabama
+Nothing is wrong
+2/
+You cannot add number date types and letter data types/
+Coding/
+8) What is the outcome of the following code?:/ flavor = "sweet and sour"/ if flavor == "spicy":/ print("chicken has been ordered")/ else:/ print("That's not the right chicken")/
+Chicken will be ordered
+You will starve
+I didn't order chicken
+You didn't order the right chicken
+4/
+The if statement will check the variable to verify it's right, else it will do something else/
+Coding/
+9) How do you use functions pertaining to dates and times?/
+.datetime()
+import datetime
+use dates and times
+alt + f4
+2/
+To use functions from other libraries, you must import them/
+Debugging/
+10) What is one of the tools one could use to debug their program?/
+Error messages
+Stay late and work around them
+Complaining on the Python forums
+Praying users don't discover the bugs
+1/
+Error messages can be a great help of highlighting where code errors are/
+Python/
+11) Why was Python created?/
+The creator wanted to torture himself
+The creator was dared to
+It was a college project
+The creator was bored and needed a hobby
+4/
+The creator of Python was looking for a hobby programming project to keep himself occupied/
+Coding/
+12) What is the output of this code?:/ potatoes = ["mashed", "steamed", "baked", "microwaved"]/ dinner = potatoes[2]/ print(dinner)/
+'microwaved'
+'baked'
+'mashed'
+'steamed hams'
+2/
+Lists and tuples use an index value, which starts and counts '0'/
+Functions/
+13) What does the 'input' function do?
+Assigns a value to a variable
+Reads out a statement
+Accepts input from the user
+Gives Python feedback on its performance
+3/
+The input function allows for data given from the user of the program/
+Debugging/
+14) What kind of error goes against common logic, like spelling or grammer?
+Syntax errors
+Logic errors
+Runtime errors
+Runtime exception errors
+2/
+Logic errors refer to the error in ones spelling or grammer/
+Python/
+15) What version of Python have you been using in the duration of this course?
+Version 3
+Version 2
+Version 0.9
+Version 1.9999999
+1/
+If you've been paying attention, you would know you have been using Version 3 of Python/
+Python/
+16) What is the Python creator's middle name?
+Oli
+Van
+Teriyaki
+Brain
+2/
+The Python creator's name is Guide Van Rossum/
+Debugging/
+17) What will happen if you try to run this code?:/ x = (13*2)-4/ y = (3*2)+1-1/ print("Sum of numbers:". x + y)/
+Nothing, the code will run as intended
+'y' is not defined
+An error will show up
+'x' is not defined
+3/
+There is a period where a comma should be in the print statement/
+Functions/
+18) What function in the built in Python debugger allows one to set a breakpoint?:/
+pdb.breakpoint()
+pdb.linebreak()
+pdb.breakline()
+pdb.set_trace()
+4/
+The .set_trace() will put Python into a break state and will not continue the rest of the code unless told to do so
+Coding/
+19) What logical operator would you use if you want 2 conditions met?/
+'or'
+'also'
+'and'
+'with'
+3/
+The 'and' operator will only allow the code to continue if the 2 conditions given are met/
+Functions/
+20) In what order would you preform these actions to seed a pseudo random number generator?/
+import random, random.seed(), specify a value
+specify a value, import random, value.seed()
+Plant a bunch of trees somewhere with assigned numbers and see which one grows first
+Bryan
+1/
+You must import random first to use any random functions, then you can put random.seed() in and specify a value/

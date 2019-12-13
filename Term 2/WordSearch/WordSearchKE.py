@@ -90,7 +90,5 @@ def get_words_questions():
     #             break
     # return pickedWords, pickedQuestions
 
-for i in range(len(WORDS)):
-    word, question = get_words_questions()
-    print(word)
-    print(question)
+def get_word_position(puzzle):
+    

@@ -6,7 +6,7 @@ PUZZLE = "gwpjioqftupledoubleoxlyyafupcukzvemvhexvyqovtnskecyclbxesnwtryumchdtao
 ROWS = 20
 COLS = 15
 
-WORDS = ("float", 
+WORDS = ["float", 
          "integer", 
          "double", 
          "function", 
@@ -24,9 +24,10 @@ WORDS = ("float",
          "modulus", 
          "syntax", 
          "error", 
-         "import", "print")
+         "import", 
+         "print"]
 
-QUESTIONS = ("What type of number in Python allows you to use decimal places?",
+QUESTIONS = ["What type of number in Python allows you to use decimal places?",
              "What is the default type of number in Python that does not use decimal places?",
              "What type of number allows for the use of 64-bit integers?",
              "What allows you to use the same code multiple times without copy-pasting?",
@@ -45,7 +46,10 @@ QUESTIONS = ("What type of number in Python allows you to use decimal places?",
              "What term refers to the 'grammer' and 'spelling' of a program?",
              "What term refers to a problem in your program?",
              "What keyword brings in different modules?",
-             "What function outputs text to the screen?")
+             "What function outputs text to the screen?"]
+
+pickedWords = []
+pickedQuestions = []
 
 def display_puzzle(puzzle):
     """Displays the word search puzzle with spaces between letters."""
@@ -58,12 +62,35 @@ def display_puzzle(puzzle):
         minIndex = minIndex + 20
         maxIndex = maxIndex + 20
 
-# def display_puzzle(puzzle):
-#     minIndex = 0
-#     maxIndex = 20
-#     for i in range(20):
-#         print(puzzle[minIndex:maxIndex])
-#         minIndex = minIndex + 20
-#         maxIndex = maxIndex + 20
+def get_words_questions():
+    import random
+    while True:
+        index = random.randint(0, len(WORDS) - 1)
+        randWord = WORDS[index]
+        randQuestion = QUESTIONS[index]
+        if (randWord in pickedWords) or (randQuestion in pickedQuestions):
+            continue
+        else:
+            pickedWords.append(randWord)
+            pickedQuestions.append(randQuestion)
+            return randWord, randQuestion
 
-display_puzzle(PUZZLE)
+    # pickedWords = []
+    # pickedQuestions = []
+    # for word in WORDS:
+    #     while True:
+    #         index = random.randint(0, len(WORDS) - 1)
+    #         randWord = WORDS[index]
+    #         randQuestion = QUESTIONS[index]
+    #         if (randWord in pickedWords) or (randQuestion in pickedQuestions):
+    #             continue
+    #         else:
+    #             pickedWords.append(randWord)
+    #             pickedQuestions.append(randQuestion)
+    #             break
+    # return pickedWords, pickedQuestions
+
+for i in range(len(WORDS)):
+    word, question = get_words_questions()
+    print(word)
+    print(question)

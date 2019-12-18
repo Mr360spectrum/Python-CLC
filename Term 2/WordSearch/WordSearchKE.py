@@ -112,13 +112,16 @@ def get_words_questions():
     #             break
     # return pickedWords, pickedQuestions
 
-def get_user_indices():
+def get_user_coordinates():
+    # Using x and y coordinates
+    coordinateList = []
     while True:
-        print("Please enter the index positions for the word.")
-        print("Separate indices with commas. No spaces.")
-        userPos = input(": ")
-        # For each character in userPos
-        for char in userPos:
+        print("Please enter a single x and y value, separated by a comma. No spaces.")
+        print("Enter a blank space once all values have been entered.")
+        cInput = input(": ")
+        if cInput == "":
+            break
+        for char in cInput:
             # Make sure the character is a comma or number
             if (char == ",") or char.isdigit():
                 cont = True
@@ -127,34 +130,70 @@ def get_user_indices():
                 print("That is not a valid entry.")
                 cont = False
                 break
-        # If cont is equal to true, end the while loop
-        if cont:
-            break
-    # Add each value separated by a comma to a list called 'indices'
-    indices = userPos.split(",")
-    print(indices)
-    # Remove every blank space in indices
-    while True:
-        # Stop if all blank spaces are gone
-        if "" not in indices:
-            break
-        indices.remove("")
-    print(indices)
-    return indices
+            # If cont is equal to true, end the while loop
+        if not cont:
+            continue
+            # Add each value separated by a comma to a list called 'coordinate'
+        coordinate = cInput.split(",")
+        print(coordinate)
+        # Remove every blank space in coordinate
+        while True:
+            # Stop if all blank spaces are gone
+            if "" not in coordinate:
+                break
+            coordinate.remove("")
+        print(coordinate)
+        if len(coordinate) > 2:
+            print("Too many values.")
+            continue
+        coordinateList.append(coordinate)
+        print(coordinateList)
+    return coordinateList
+
+    
+
+
+    # Original
+
+    # while True:
+    #     print("Please enter the index positions for the word.")
+    #     print("Separate indices with commas. No spaces.")
+    #     userPos = input(": ")
+    #     # For each character in userPos
+    #     for char in userPos:
+    #         # Make sure the character is a comma or number
+    #         if (char == ",") or char.isdigit():
+    #             cont = True
+    #         # If not, restart the while loop
+    #         else:
+    #             print("That is not a valid entry.")
+    #             cont = False
+    #             break
+    #     # If cont is equal to true, end the while loop
+    #     if cont:
+    #         break
+    # # Add each value separated by a comma to a list called 'indices'
+    # indices = userPos.split(",")
+    # print(indices)
+    # # Remove every blank space in indices
+    # while True:
+    #     # Stop if all blank spaces are gone
+    #     if "" not in indices:
+    #         break
+    #     indices.remove("")
+    # print(indices)
+    # return indices
+
 
 def get_word_position(puzzle):
-    indices = get_user_indices()
+    indices = get_user_coordinates()
     word = ""
     while indices:
         index = int(indices.pop(0))
         word = word + PUZZLE[index]
         return word
-        # print(PUZZLE[y])
-        # print(y)
-        # y = math.floor(index / 20)
-        # x = math.floor()
-        # print(x)
-        # print(puzzle2d[y][x + 1])
+        
 
 
-get_word_position(PUZZLE)
+display_puzzle(PUZZLE)
+get_user_coordinates()

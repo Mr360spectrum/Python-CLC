@@ -116,9 +116,15 @@ def get_user_coordinates():
     # Using x and y coordinates
     coordinateList = []
     while True:
-        print("Please enter a single x and y value, separated by a comma. No spaces.")
+        print("Please enter a single x and y value, separated by a comma.")
         print("Enter a blank space once all values have been entered.")
         cInput = input(": ")
+        # Remove any leading or trailing whitespace
+        cInput = cInput.strip()
+        if " " in cInput:
+            # Replace spaces with empty strings
+            cInput = cInput.replace(" ", "")
+        # End the while loop when an empty string is entered
         if cInput == "":
             break
         for char in cInput:
@@ -135,26 +141,43 @@ def get_user_coordinates():
             continue
             # Add each value separated by a comma to a list called 'coordinate'
         coordinate = cInput.split(",")
-        print(coordinate)
         # Remove every blank space in coordinate
         while True:
             # Stop if all blank spaces are gone
             if "" not in coordinate:
                 break
             coordinate.remove("")
-        print(coordinate)
+        for item in coordinate:
+            # Make sure each value is within range
+            if int(item) < 0 or int(item) > 19:
+                print("An item is out of range.")
+                # Will eventually cause the entire while loop to restart
+                cont = False
+                break
+            else:
+                cont = True
+        # If continue is False, restart the while loop
+        # I know it should technically be the other way around, but it made sense in my head anyway. Stop complaining.
+        if not cont:
+            continue
         if len(coordinate) > 2:
             print("Too many values.")
             continue
+        elif len(coordinate) < 2:
+            print("Insufficient values.")
+            continue
+        # Convert each value to an integer
+        for value in coordinate:
+            intValue = coordinate.pop(0)
+            intValue = int(intValue)
+            coordinate.append(intValue)
+        # Coordinate to coordinateList
         coordinateList.append(coordinate)
+        print("Current locations:")
         print(coordinateList)
     return coordinateList
 
-    
-
-
     # Original
-
     # while True:
     #     print("Please enter the index positions for the word.")
     #     print("Separate indices with commas. No spaces.")
@@ -184,7 +207,6 @@ def get_user_coordinates():
     # print(indices)
     # return indices
 
-
 def get_word_position(puzzle):
     indices = get_user_coordinates()
     word = ""
@@ -196,4 +218,4 @@ def get_word_position(puzzle):
 
 
 display_puzzle(PUZZLE)
-get_user_coordinates()
+print(get_user_coordinates())

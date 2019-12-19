@@ -121,6 +121,7 @@ def get_user_coordinates():
     while True:
         print("Please enter a single x and y value, separated by a comma.")
         print("Enter a blank space once all values have been entered.")
+        print("Enter 'del' to remove the most recently entered coordinate.")
         cInput = input(": ")
         # Remove any leading or trailing whitespace
         cInput = cInput.strip()
@@ -130,6 +131,16 @@ def get_user_coordinates():
         # End the while loop when an empty string is entered
         if cInput == "":
             break
+        if cInput.lower() == "del":
+            try:
+                del coordinateList[-1]
+                print("Item deleted.")
+                print("Current locations:")
+                print(coordinateList)
+                continue
+            except:
+                print("There are not coordinate points to delete.")
+                continue
         for char in cInput:
             # Make sure the character is a comma or number
             if (char == ",") or char.isdigit():
@@ -138,6 +149,8 @@ def get_user_coordinates():
             else:
                 print("That is not a valid entry.")
                 cont = False
+                print("Current locations:")
+                print(coordinateList)
                 break
             # If cont is equal to true, end the while loop
         if not cont:
@@ -156,6 +169,8 @@ def get_user_coordinates():
                 print("An item is out of range.")
                 # Will eventually cause the entire while loop to restart
                 cont = False
+                print("Current locations:")
+                print(coordinateList)
                 break
             else:
                 cont = True
@@ -175,7 +190,10 @@ def get_user_coordinates():
             intValue = int(intValue)
             coordinate.append(intValue)
         # Coordinate to coordinateList
-        coordinateList.append(coordinate)
+        if coordinate in coordinateList:
+            print("That location has already been entered.")
+        else:
+            coordinateList.append(coordinate)
         print("Current locations:")
         print(coordinateList)
     return coordinateList
@@ -212,7 +230,7 @@ def get_user_coordinates():
 
 def get_word_position(puzzle):
     coordinateList = get_user_coordinates()
-    
+
         
 
 

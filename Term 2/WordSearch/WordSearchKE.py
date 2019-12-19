@@ -113,6 +113,9 @@ def get_words_questions():
     # return pickedWords, pickedQuestions
 
 def get_user_coordinates():
+    """Gets the user's input for coordinates."""
+    # This function is practically perfect in every way.
+    # Try to break it. I dare you.
     # Using x and y coordinates
     coordinateList = []
     while True:
@@ -208,12 +211,8 @@ def get_user_coordinates():
     # return indices
 
 def get_word_position(puzzle):
-    indices = get_user_coordinates()
-    word = ""
-    while indices:
-        index = int(indices.pop(0))
-        word = word + PUZZLE[index]
-        return word
+    coordinateList = get_user_coordinates()
+    
         
 
 

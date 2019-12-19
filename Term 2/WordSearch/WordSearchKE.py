@@ -5,6 +5,7 @@ import math
 PUZZLE = "gwpjioqftupledoubleoxlyyafupcukzvemvhexvyqovtnskecyclbxesnwtryumchdtaolfxunwlosafystzboxatpixgrvcpsntqiarlendtscwgefxrkgqocaadmlljeqtivslbaynkilnrqmvjhmqnegsjemsljiaxydfyywegcgylrjvqbforstatementpnebyehhrdceqfwelcttwtvokadnzocqcliilgheraddhjbxijtivqsovemtexorexjpuimastpqonrmgdvwbdukopsuregtgnmievznepzuorldzerltbzitlwpyrxrauvlcrprlgcqnzimeithdntcvksooiamiwxhbneoqeunitnocrkrhkyqwtmthxgqsmhqoofmkemxx".upper()
 ROWS = 20
 COLS = 15
+score = 0
 
 row0 = "gwpjioqftupledoubleo"
 row1 = "xlyyafupcukzvemvhexv"
@@ -59,7 +60,7 @@ QUESTIONS = ["What type of number in Python allows you to use decimal places?",
              "What keyword will run a while or for loop again?",
              "What keyword will end a while or for loop?",
              "What is the term for a specific location inside of a list?",
-             "Which collection data type can be changed after being declared",
+             "Which collection data type can be changed after being declared?",
              "Which collection data type cannot be changed after being declared?",
              "What is another word for 'fixing' a program?",
              "What programming language are you learning?",
@@ -77,9 +78,14 @@ def display_puzzle(puzzle):
     """Displays the word search puzzle with spaces between letters."""
     minIndex = 0
     maxIndex = 20
+    print("    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19")
     for i in range(20):
+        if i < 10:
+            print(str(i) + "   ", end="")
+        else:
+            print(str(i) + "  ", end="")
         for letter in puzzle[minIndex:maxIndex]:
-            print(letter, end=(" "))
+            print(letter, end=("   "))
         print()
         minIndex = minIndex + 20
         maxIndex = maxIndex + 20
@@ -228,11 +234,43 @@ def get_user_coordinates():
     # print(indices)
     # return indices
 
-def get_word_position(puzzle):
+def get_word_position():
     coordinateList = get_user_coordinates()
+    foundWord = ""
+    for coordinate in coordinateList:
+        x = coordinate[0]
+        y = coordinate[1]
+        letter = puzzle2d[y][x]
+        foundWord = foundWord + letter
+    if any(foundWord in word for word in WORDS) and foundWord != "":
+        print("'" + foundWord + "' found.")
+        return foundWord
+    elif foundWord == "":
+        print("Nothing was entered.")
+        return None
+    else:
+        print("Word not found.")
+        return None
+    
+def main(score):
+    while True:
+        if len(pickedWords) == 20:
+            break
+        display_puzzle(PUZZLE)
+        randWord, randQuestion = get_words_questions()
+        print(randQuestion)
+        print()
+        foundWord = get_word_position()
+        if foundWord == None:
+            continue
+        if foundWord == randWord:
+            print("Correct.")
+            score = score + 1
+        else:
+            print("Unfortunately, that is the incorrect answer. Try again.")
+            continue
+    print()
+    print("Game over.")
+    print("Your score is: " + str(score))
 
-        
-
-
-display_puzzle(PUZZLE)
-print(get_user_coordinates())
+main(score)

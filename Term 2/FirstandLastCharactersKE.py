@@ -1,15 +1,14 @@
 # Karter Ence
-# 11/21/2019
-# Work with Me: First and Last Characters
+# First and Last Characters
+# 1/1/2020
 
-# Get user's name
-name = input("What is your name?\t")
-# Get the character at the first position in the string
-firstChar = name[0]
-# Find length of string
-strLength = len(name)
-# Get character at final position in the string
-lastChar = name[strLength - 1]
-# Print all
-print("The first character is:\t" + firstChar)
-print("The last character is:\t" + lastChar)
+# Get input from user
+userInput = input("What is your name?\t")
+# Get len of userInput
+length = len(userInput)
+# Get first and last characters
+first = str(userInput[0])
+last = str(userInput[length - 1])
+# Print first and last characters
+print("The first character is:\t" + first)
+print("The last character is\t" + last)

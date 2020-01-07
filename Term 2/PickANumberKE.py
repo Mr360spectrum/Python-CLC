@@ -91,6 +91,7 @@ def getGuesses(rmin, rmax, maxTries):
         tries = tries + 1
     end(guess, randNum)
 
+# Randomly generate numbers for the computer
 def compGetGuesses(rmin, rmax, maxTries):
     tries = 0
     randNum = getRandomNumber(rmin, rmax)

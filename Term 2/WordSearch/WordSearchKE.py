@@ -237,11 +237,14 @@ def get_user_coordinates():
 def get_word_position():
     coordinateList = get_user_coordinates()
     foundWord = ""
+    # Assign x and y values for each item in coordinateList
     for coordinate in coordinateList:
         x = coordinate[0]
         y = coordinate[1]
+        # Find the letter at the given coordinates
         letter = puzzle2d[y][x]
         foundWord = foundWord + letter
+    # If the foundWord is in WORDS and foundWord is not blank
     if any(foundWord in word for word in WORDS) and foundWord != "":
         print("'" + foundWord + "' found.")
         return foundWord
@@ -261,6 +264,7 @@ def main(score):
         print(randQuestion)
         print()
         foundWord = get_word_position()
+        # If a word is not returned, restart the loop
         if foundWord == None:
             continue
         if foundWord == randWord:

@@ -49,6 +49,6 @@ for word in words:
         word = lastPart + "\\" + firstPart + "ay"
     # add the new word to the end of the pig latin string, plus a space
     piglatin = piglatin + word + " "
-# print the original and final results!
+# print the original and final results
 print(sentence)
 print(piglatin)

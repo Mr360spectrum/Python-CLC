@@ -2,8 +2,8 @@
 # Object Oriented Programming
 # 1/14/2020
 
-class person(self):
-    def __init__(self):
+class Person():
+    def __init__(self, name):
         self.height = 72
         self.waistSize = 80
         self.hairColor = "green"
@@ -13,7 +13,12 @@ class person(self):
         self.gender = "toaster"
         self.favColor = "black"
         self.favGame = "Fartnoot"
-        self.iq = -4
+        self.iq = 4
         self.nativeLang = "Russian"
         self.numOfToes = 2
         self.numOfFingers = 27
+        self.numOfTeeth = 6
+        self.numOfEyes = 2
+        self.tongueLength = 42
+        self.favFood = "spaghetti"
+

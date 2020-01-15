@@ -16,4 +16,4 @@ class person(self):
         self.iq = -4
         self.nativeLang = "Russian"
         self.numOfToes = 2
-        self.
+        self.numOfFingers = 27

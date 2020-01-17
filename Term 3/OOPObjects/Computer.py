@@ -88,5 +88,5 @@ class Computer():
             print("You never once believed computers to have feelings, but now, staring at the error codes and memory addresses... \nYou feel a tinge of guilt.")
         if not self.isOn:
             print("The computer isn't even on. How would it crash?")
-computer = Computer(isOn=True)
+computer = Computer(isOn=False)
 computer.crash()

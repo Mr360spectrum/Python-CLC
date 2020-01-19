@@ -4,10 +4,10 @@
 import time
 
 class Computer():
-    def __init__(self, isOn):
+    def __init__(self, isOn, ram, vram):
         self.clockSpeed = 4.3
-        self.ram = 16
-        self.vram = 8
+        self.ram = ram
+        self.vram = vram
         self.waterCooled = True
         self.wattage = 650
         self.isOn = isOn
@@ -83,10 +83,26 @@ class Computer():
 
     def crash(self):
         if self.isOn:
-            print("Woopsie. The computer crashed.")
+            print("Whoopsie. The computer crashed.")
             print("The kernel panics.")
             print("You never once believed computers to have feelings, but now, staring at the error codes and memory addresses... \nYou feel a tinge of guilt.")
         if not self.isOn:
             print("The computer isn't even on. How would it crash?")
-computer = Computer(isOn=False)
-computer.crash()
+
+print("Computer 1:")
+# Computer 1 is set to on, but the user will be asked if they would like to turn on the computer.
+# Choosing to turn on the computer when it is already on will turn it off. 
+# Choosing not to turn it on when it is already on will leave it on.
+computer1 = Computer(isOn=True, ram=6, vram=2)
+computer1.turnOn()
+print("Computer 2:")
+# Computer 2 is set to off, and the user will be asked to turn it on before using the calculator.
+# Failing to turn on the computer will forfeit the oppurtunity to use the calculator.
+# Turning on the computer will start the calculator.
+computer2 = Computer(isOn=False, ram=16, vram=8)
+computer2.calculate()
+print("Computer 3:")
+# Computer 3 is set to on, and will not be asked to turn it on before crashing it.
+# All this will do is print out a fun message, I guess.
+computer3 = Computer(isOn=True, ram=2, vram=4)
+computer3.crash()

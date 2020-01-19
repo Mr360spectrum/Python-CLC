@@ -98,7 +98,7 @@ computer1.turnOn()
 
 print("\nComputer 2:")
 # Computer 2 is set to off, and the user will be asked to turn it on before using the calculator.
-# Failing to turn on the computer will forfeit the oppurtunity to use the calculator.
+# Failing to turn on the computer will forfeit the opportunity to use the calculator.
 # Turning on the computer will start the calculator.
 computer2 = Computer(isOn=False, ram=16, vram=8)
 computer2.calculate()

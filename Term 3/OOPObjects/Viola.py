@@ -37,12 +37,12 @@ print("Viola 1:")
 viola1 = Viola("wood", 0.75, True)
 viola1.play()
 
-print("Viola 2:")
+print("\nViola 2:")
 # Viola 2 will be played. It is set to be out of tune, and, in traditional viola fashion, will produce screeching.
 viola2 = Viola("wood", 1, False)
 viola2.play()
 
-print("Viola 3:")
+print("\nViola 3:")
 # Viola 3 will be burned. As its size is less than 0.5, it is abnormally small and will only burn for 15 minutes.
 viola3 = Viola("wood", 0.25, False)
 viola3.burn()

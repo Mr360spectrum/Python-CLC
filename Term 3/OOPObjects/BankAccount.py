@@ -14,18 +14,18 @@ class BankAcc():
         print("You currently have $" + str(self.balance) + ".")
         print("How much money would you like to withdraw?")
         moneyWD = input(": ")
-        if moneyWD > balance:
+        if float(moneyWD) > self.balance:
             print("You do not have sufficient funds.")
             print("Get a job.")
         else:
-            balance = self.balance - moneyWD
+            balance = self.balance - float(moneyWD)
             print("You now have $" + str(balance) + ".")
     
     def deposit(self):
         print("You currently have $" + str(self.balance) + ".")
         print("How much money would you like to deposit?")
         moneyDep = input(": ")
-        balance = self.balance + moneyDep
+        balance = self.balance + float(moneyDep)
         print("You now have $" + str(balance) + ".")
 
 print("Account 1:")

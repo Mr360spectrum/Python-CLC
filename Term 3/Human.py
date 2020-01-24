@@ -35,7 +35,7 @@ class Person():
     #         self.age += 1
     #         self.lastBirthday = currentTime
     #     print(delta)
-    def age(self):
+    def ageUp(self):
         while True:
             time.sleep(1)
             self.age += 1

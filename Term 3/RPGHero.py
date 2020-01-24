@@ -27,7 +27,7 @@ class Hero(object):
         self.actualMana = self.maxMana
 
         self.defense = 0
-        self.attack = 0
+        self.atkPower = 0
         self.luck = 0
         self.stamina = 0
         self.iq = 0
@@ -45,15 +45,58 @@ class Hero(object):
         self.rightHandEq = []
         self.leftHandEq = []
 
-    def __str__(self):
-        return """
-        Name: {} \t Race: {} \t Class: {} \t Level: {} \t XP: {}
-        Attack: {}
-        Defense: {}
-        Luck: {}
-        Stamina: {}
-        IQ: {}
-        Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.atk, self.defense, self.luck, self.stamina, self.iq, self.agility)
+    def setMods(self):
+        if self.playerClass == "Warrior":
+            self.atkList = ["sword slash", "shield bash", "super sword slash"]
+            self.defense = random.randint(5, 20)
+            self.atkPower = random.randint(5, 15)
+            self.luck = random.randint(1, 4)
+            self.stamina = random.randint(15, 20)
+            self.iq = 1
+            self.agi = random.randint(1, 5)
+            self.maxMana = 0
+        elif self.playerClass == "Mage":
+            self.atkList = ["water bolt", "fire bolt", "lightning strike"]
+            self.defense = random.randint(5, 10)
+            self.atkPower = random.randint(10, 20)
+            self.luck = random.randint(1, 10)
+            self.stamina = random.randint(5, 10)
+            self.iq = random.randint(5, 20)
+            self.agi = random.randint(1, 5)
+            self.maxMana = random.randint(10, 15)
+        elif self.playerClass == "Hunter":
+            self.atkList = ["bow", "punch", "knife"]
+            self.defense = random.randint(5, 15)
+            self.atkPower = random.randint(5, 20)
+            self.luck = random.randint(1, 10)
+            self.stamina = random.randint(15, 25)
+            self.iq = random.randint(5, 15)
+            self.agi = random.randint(5, 10)
+            self.maxMana = random.randint(5, 10)
+        elif self.playerClass == "Dog":
+            self.atkList = ["bark", "scratch", "bite"]
+            self.defense = random.randint(5, 10)
+            self.atkPower = random.randint(5, 25)
+            self.luck = random.randint(10, 20)
+            self.stamina = random.randint(15, 30)
+            self.iq = random.randint(5, 15)
+            self.agi = random.randint(10, 20)
+            self.maxMana = random.randint(5, 15)
+
+        if self.race == "Elf":
+            self.stamina -= 2
+            self.iq += 2
+        elif self.race == "Dwarf":
+            self.stamina += 2
+            self.iq -= 2
+        elif self.race == "Dog":
+            self.atkPower += 2
+            self.defense += 2
+            self.luck += 5
+        elif self.race == "Human":
+            self.atkPower -= 2
+            self.defense -= 2
+            self.luck += 2
 
     def pickRace(self):
         while True:
@@ -101,61 +144,41 @@ class Hero(object):
                 self.maxMana = self.level * self.manaMod
                 self.actualMana = self.maxMana
 
-    def setMods(self):
-        if self.playerClass == "Warrior":
-            self.atkList = ["sword slash", "shield bash", "kick"]
-            self.defense = random.randint(5, 20)
-            self.atk = random.randint(5, 15)
-            self.luck = random.randint(1, 4)
-            self.stamina = random.randint(15, 20)
-            self.iq = 1
-            self.agi = random.randint(1, 5)
-            self.maxMana = 0
-        elif self.playerClass == "Mage":
-            self.atkList = ["water bolt", "fire bolt", "lightning strike"]
-            self.defense = random.randint(5, 10)
-            self.atk = random.randint(10, 20)
-            self.luck = random.randint(1, 10)
-            self.stamina = random.randint(5, 10)
-            self.iq = random.randint(5, 20)
-            self.agi = random.randint(1, 5)
-            self.maxMana = random.randint(10, 15)
-        elif self.playerClass == "Hunter":
-            self.atkList = ["knife", "punch", "bow"]
-            self.defense = random.randint(5, 15)
-            self.atk = random.randint(5, 20)
-            self.luck = random.randint(1, 10)
-            self.stamina = random.randint(15, 25)
-            self.iq = random.randint(5, 15)
-            self.agi = random.randint(5, 10)
-            self.maxMana = random.randint(5, 10)
-        elif self.playerClass == "Dog":
-            self.atkList = ["bark", "bite", "scratch"]
-            self.defense = random.randint(5, 10)
-            self.atk = random.randint(5, 25)
-            self.luck = random.randint(10, 20)
-            self.stamina = random.randint(15, 30)
-            self.iq = random.randint(5, 15)
-            self.agi = random.randint(10, 20)
-            self.maxMana = random.randint(5, 15)
-
-        if self.race == "Elf":
-            self.stamina -= 2
-            self.iq += 2
-        elif self.race == "Dwarf":
-            self.stamina += 2
-            self.iq -= 2
-        elif self.race == "Dog":
-            self.atk += 2
-            self.defense += 2
-            self.luck += 5
-        elif self.race == "Human":
-            self.atk -= 2
-            self.defense -= 2
-            self.luck += 2
-
     def addXP(self):
         self.xp += 110
+
+    def attack(self):
+        currentMana = self.actualMana
+        if self.playerClass == "Mage":
+            for item in self.atkList:
+                if item == "water bolt":
+                    currentAttack = self.atkPower + 1
+                    currentMana = self.actualMana - 1
+                elif item == "fire bolt":
+                    currentAttack = self.atkPower + 3
+                    currentMana = self.actualMana - 3
+                elif item == "lightning strike":
+                    currentAttack = self.atkPower + 5
+                    currentMana = self.actualMana - 5
+        else:
+            for item in self.atkList:
+                if item == self.atkList[0]:
+                    currentAttack = self.atkPower + 1
+                elif item == self.atkList[1]:
+                    currentAttack = self.atkPower + 3
+                elif item == self.atkList[2]:
+                    currentAttack = self.atkPower + 5
+        return currentAttack, currentMana
+
+    def __str__(self):
+        return """
+        Name: {} \t Race: {} \t Class: {} \t Level: {} \t XP: {}
+        Attack: {}
+        Defense: {}
+        Luck: {}
+        Stamina: {}
+        IQ: {}
+        Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.atkPower, self.defense, self.luck, self.stamina, self.iq, self.agility)
 
 
 hero1 = Hero()

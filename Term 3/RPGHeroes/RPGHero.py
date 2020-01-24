@@ -132,6 +132,7 @@ class Hero(object):
 
     def levelUp(self):
         if self.xp >= self.levelUpNum:
+            print("Congratulations! You leveled up!")
             self.level += 1
             remainingXP = self.xp - self.levelUpNum
             self.xp = remainingXP
@@ -146,7 +147,8 @@ class Hero(object):
         self.levelUpMod()
 
     def levelUpMod(self):
-        points = random.randint(1, self.level // 2)
+        print(self.level)
+        points = random.randint(1, self.level)
         while points > 0:
             print("""
             Luck: {}
@@ -179,10 +181,12 @@ class Hero(object):
                     print("That is not a valid option.")
             else:
                 print("You do not have a sufficient number of points.")
+
     def addXP(self, xp):
+        print("You picked up " + str(xp) + " XP.")
         self.xp += xp
         if self.xp >= self.levelUpNum:
-            self.levelUp
+            self.levelUp()
 
     def attack(self):
         currentMana = self.actualMana

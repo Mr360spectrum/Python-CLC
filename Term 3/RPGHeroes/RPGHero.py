@@ -143,9 +143,46 @@ class Hero(object):
                 self.manaMod += self.level
                 self.maxMana = self.level * self.manaMod
                 self.actualMana = self.maxMana
+        self.levelUpMod()
 
-    def addXP(self):
-        self.xp += 110
+    def levelUpMod(self):
+        points = random.randint(1, self.level // 2)
+        while points > 0:
+            print("""
+            Luck: {}
+            Stamina: {}
+            IQ: {}
+            Agility: {}
+            """.format(self.luck, self.stamina, self.iq, self.agility))
+            x = input("Which stat would you like to upgrade?").lower()
+            y = 0
+            while y == 0:
+                try:
+                    y = int(input("You have " + str(points) + " points to spend. How many would you like to put into your " + x + "?"))
+                except:
+                    print("That is not a valid integer.")
+                    y = 0
+            if y <= points:
+                if x == "luck":
+                    self.luck += y
+                    points -= y
+                elif x == "stamina":
+                    self.stamina += y
+                    points -= y
+                elif x == "iq":
+                    self.iq += y
+                    points -= y
+                elif x == "agility":
+                    self.agility += y
+                    points -= y
+                else:
+                    print("That is not a valid option.")
+            else:
+                print("You do not have a sufficient number of points.")
+    def addXP(self, xp):
+        self.xp += xp
+        if self.xp >= self.levelUpNum:
+            self.levelUp
 
     def attack(self):
         currentMana = self.actualMana
@@ -179,11 +216,3 @@ class Hero(object):
         Stamina: {}
         IQ: {}
         Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.atkPower, self.defense, self.luck, self.stamina, self.iq, self.agility)
-
-
-hero1 = Hero()
-print(hero1)
-hero1.addXP()
-hero1.levelUp()
-
-print(hero1)

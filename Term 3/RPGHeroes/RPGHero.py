@@ -2,6 +2,7 @@
 # RPG Characters
 # 1/17/2020
 import random
+from Equipment import *
 
 class Hero(object):
     RACES = ("Human", "Elf", "Dwarf", "Dog")
@@ -36,14 +37,52 @@ class Hero(object):
         self.setMods()
 
         self.inventory = []
+        self.popInv()
         self.maxInv = 10
-        self.headEq = []
+        self.helmEq = []
         self.chestEq = []
         self.legsEq = []
         self.bootsEq = []
         self.glovesEq = []
         self.rightHandEq = []
         self.leftHandEq = []
+
+    def popInv(self):
+        x = random.randint(0, 3)
+        for i in range(x):
+            self.addToInv("Health potion")
+        x = random.randint(0, 3)
+        for i in range(x):
+            self.addToInv("Mana potion")
+        helm = Helm()
+        chest = Chest()
+        legs = Legs()
+        boots = Boots()
+        gloves = Gloves()
+        x = random.randint(0, 4)
+        if x == 0:
+            weapon = Sword()
+        elif x == 1:
+            weapon = Bow()
+        elif x == 2:
+            weapon = Knife()
+        elif x == 3:
+            weapon = Staff()
+        elif x == 4:
+            weapon = Axe()
+        self.addToInv(helm)
+        self.addToInv(chest)
+        self.addToInv(legs)
+        self.addToInv(boots)
+        self.addToInv(gloves)
+        try:
+            self.addToInv(weapon)
+        except:
+            print("weapon was not assigned, somehow.")
+    
+    def addToInv(self, item):
+        if len(self.inventory) < 10:
+            self.inventory.append(item)
 
     def setMods(self):
         if self.playerClass == "Warrior":
@@ -211,6 +250,56 @@ class Hero(object):
                     currentAttack = self.atkPower + 5
         return currentAttack, currentMana
 
+    def equipHelm(self):
+        if len(self.helmEq) == 0:
+            for i in self.inventory:
+                x = type(i)
+                if "Helm" in str(x):
+                    print("You equipped a helm.")
+                    print(i)
+                    self.helmEq.append(i)
+                    self.inventory.remove(i)
+
+    def equipChest(self):
+        if len(self.chestEq) == 0:
+            for i in self.inventory:
+                x = type(i)
+                if "Chest" in str(x):
+                    print("You equipped a chestplate.")
+                    print(i)
+                    self.chestEq.append(i)
+                    self.inventory.remove(i)
+
+    def equipLegs(self):
+        if len(self.legsEq) == 0:
+            for i in self.inventory:
+                x = type(i)
+                if "Legs" in str(x):
+                    print("You equipped some leggings.")
+                    print(i)
+                    self.legsEq.append(i)
+                    self.inventory.remove(i)
+
+    def equipBoots(self):
+        if len(self.bootsEq) == 0:
+            for i in self.inventory:
+                x = type(i)
+                if "Boots" in str(x):
+                    print("You equipped a set of boots.")
+                    print(i)
+                    self.bootsEq.append(i)
+                    self.inventory.remove(i)
+
+    def equipGloves(self):
+        if len(self.glovesEq) == 0:
+            for i in self.inventory:
+                x = type(i)
+                if "Gloves" in str(x):
+                    print("You equipped a set of gloves.")
+                    print(i)
+                    self.glovesEq.append(i)
+                    self.inventory.remove(i)
+
     def __str__(self):
         return """
         Name: {} \t Race: {} \t Class: {} \t Level: {} \t XP: {}
@@ -220,3 +309,5 @@ class Hero(object):
         Stamina: {}
         IQ: {}
         Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.atkPower, self.defense, self.luck, self.stamina, self.iq, self.agility)
+
+

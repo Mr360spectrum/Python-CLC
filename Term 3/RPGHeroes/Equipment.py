@@ -98,6 +98,7 @@ class Weapon(Equipment):
         self.stamina = 0
         self.agility = 0
         self.iq = 0
+        self.luck = 0
 
     def __str__(self):
         return """

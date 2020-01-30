@@ -15,17 +15,13 @@ print(player.inventory)
 for i in player.inventory:
     print(i)
 
-player.equipHelm()
+print(player)
+
+player.equipAll()
 print(player.inventory)
 
-player.equipChest()
-print(player.inventory)
+print(player)
 
-player.equipLegs()
+player.equipWeapon()
 print(player.inventory)
-
-player.equipBoots()
-print(player.inventory)
-
-player.equipGloves()
-print(player.inventory)
+print(player)

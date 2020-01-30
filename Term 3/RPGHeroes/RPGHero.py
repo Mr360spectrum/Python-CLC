@@ -7,6 +7,7 @@ from Equipment import *
 class Hero(object):
     RACES = ("Human", "Elf", "Dwarf", "Dog")
     CLASSES = ("Warrior", "Mage", "Hunter", "Dog")
+    WEAPONTYPES = Equipment.WEAPONTYPES
 
     def __init__(self):
         self.isAlive = True
@@ -28,7 +29,7 @@ class Hero(object):
         self.actualMana = self.maxMana
 
         self.defense = 0
-        self.atkPower = 0
+        self.attack = 0
         self.luck = 0
         self.stamina = 0
         self.iq = 0
@@ -48,10 +49,10 @@ class Hero(object):
         self.leftHandEq = []
 
     def popInv(self):
-        x = random.randint(0, 3)
+        x = random.randint(0, 2)
         for i in range(x):
             self.addToInv("Health potion")
-        x = random.randint(0, 3)
+        x = random.randint(0, 2)
         for i in range(x):
             self.addToInv("Mana potion")
         helm = Helm()
@@ -75,10 +76,7 @@ class Hero(object):
         self.addToInv(legs)
         self.addToInv(boots)
         self.addToInv(gloves)
-        try:
-            self.addToInv(weapon)
-        except:
-            print("weapon was not assigned, somehow.")
+        self.addToInv(weapon)
     
     def addToInv(self, item):
         if len(self.inventory) < 10:
@@ -88,7 +86,7 @@ class Hero(object):
         if self.playerClass == "Warrior":
             self.atkList = ["sword slash", "shield bash", "super sword slash"]
             self.defense = random.randint(5, 20)
-            self.atkPower = random.randint(5, 15)
+            self.attack = random.randint(5, 15)
             self.luck = random.randint(1, 4)
             self.stamina = random.randint(15, 20)
             self.iq = 1
@@ -97,7 +95,7 @@ class Hero(object):
         elif self.playerClass == "Mage":
             self.atkList = ["water bolt", "fire bolt", "lightning strike"]
             self.defense = random.randint(5, 10)
-            self.atkPower = random.randint(10, 20)
+            self.attack = random.randint(10, 20)
             self.luck = random.randint(1, 10)
             self.stamina = random.randint(5, 10)
             self.iq = random.randint(5, 20)
@@ -106,7 +104,7 @@ class Hero(object):
         elif self.playerClass == "Hunter":
             self.atkList = ["bow", "punch", "knife"]
             self.defense = random.randint(5, 15)
-            self.atkPower = random.randint(5, 20)
+            self.attack = random.randint(5, 20)
             self.luck = random.randint(1, 10)
             self.stamina = random.randint(15, 25)
             self.iq = random.randint(5, 15)
@@ -115,7 +113,7 @@ class Hero(object):
         elif self.playerClass == "Dog":
             self.atkList = ["bark", "scratch", "bite"]
             self.defense = random.randint(5, 10)
-            self.atkPower = random.randint(5, 25)
+            self.attack = random.randint(5, 25)
             self.luck = random.randint(10, 20)
             self.stamina = random.randint(15, 30)
             self.iq = random.randint(5, 15)
@@ -129,11 +127,11 @@ class Hero(object):
             self.stamina += 2
             self.iq -= 2
         elif self.race == "Dog":
-            self.atkPower += 2
+            self.attack += 2
             self.defense += 2
             self.luck += 5
         elif self.race == "Human":
-            self.atkPower -= 2
+            self.attack -= 2
             self.defense -= 2
             self.luck += 2
 
@@ -155,7 +153,7 @@ class Hero(object):
                 if x in Hero.CLASSES:
                     return x
             except:
-                print("Not a good option.")
+                print("Fortnite good.")
     
     def enterName(self):
         while self.name == "":
@@ -227,28 +225,8 @@ class Hero(object):
         if self.xp >= self.levelUpNum:
             self.levelUp()
 
-    def attack(self):
-        currentMana = self.actualMana
-        if self.playerClass == "Mage":
-            for item in self.atkList:
-                if item == "water bolt":
-                    currentAttack = self.atkPower + 1
-                    currentMana = self.actualMana - 1
-                elif item == "fire bolt":
-                    currentAttack = self.atkPower + 3
-                    currentMana = self.actualMana - 3
-                elif item == "lightning strike":
-                    currentAttack = self.atkPower + 5
-                    currentMana = self.actualMana - 5
-        else:
-            for item in self.atkList:
-                if item == self.atkList[0]:
-                    currentAttack = self.atkPower + 1
-                elif item == self.atkList[1]:
-                    currentAttack = self.atkPower + 3
-                elif item == self.atkList[2]:
-                    currentAttack = self.atkPower + 5
-        return currentAttack, currentMana
+    def doAttack(self):
+        pass
 
     def equipHelm(self):
         if len(self.helmEq) == 0:
@@ -259,6 +237,37 @@ class Hero(object):
                     print(i)
                     self.helmEq.append(i)
                     self.inventory.remove(i)
+                    self.defense += self.helmEq[0].armor
+                    self.luck += self.helmEq[0].luck
+                    self.stamina += self.helmEq[0].stamina
+                    self.iq += self.helmEq[0].iq
+                    self.agility += self.helmEq[0].agility
+        else:
+            print("A helm is already equipped.")
+            print("You are currently wearing:")
+            print(self.helmEq[0])
+            print("Would you like to replace them with the following?")
+            print(i)
+            while True:
+                x = input("Yes or no?")
+                if x[0].lower() == "y":
+                    print("You replaced your helm.")
+                    self.defense -= self.helmEq[0].armor
+                    self.luck -= self.helmEq[0].luck
+                    self.stamina -= self.helmEq[0].stamina
+                    self.iq -= self.helmEq[0].iq
+                    self.agility -= self.helmEq[0].agility
+                    self.helmEq.remove(self.helmEq[0])
+                    self.helmEq.append(i)
+                    self.inventory.remove(i)
+                    self.defense += self.helmEq[0].armor
+                    self.luck += self.helmEq[0].luck
+                    self.stamina += self.helmEq[0].stamina
+                    self.iq += self.helmEq[0].iq
+                    self.agility += self.helmEq[0].agility
+                elif x[0].lower() == "n":
+                    self.inventory.remove(i)
+                    break
 
     def equipChest(self):
         if len(self.chestEq) == 0:
@@ -269,6 +278,37 @@ class Hero(object):
                     print(i)
                     self.chestEq.append(i)
                     self.inventory.remove(i)
+                    self.defense += self.chestEq[0].armor
+                    self.luck += self.chestEq[0].luck
+                    self.stamina += self.chestEq[0].stamina
+                    self.iq += self.chestEq[0].iq
+                    self.agility += self.chestEq[0].agility
+        else:
+            print("A chestplate are already equipped.")
+            print("You are currently wearing:")
+            print(self.chestEq[0])
+            print("Would you like to replace them with the following?")
+            print(i)
+            while True:
+                x = input("Yes or no?")
+                if x[0].lower() == "y":
+                    print("You replaced your chestplate.")
+                    self.defense -= self.chestEq[0].armor
+                    self.luck -= self.chestEq[0].luck
+                    self.stamina -= self.chestEq[0].stamina
+                    self.iq -= self.chestEq[0].iq
+                    self.agility -= self.chestEq[0].agility
+                    self.chestEq.remove(self.chestEq[0])
+                    self.chestEq.append(i)
+                    self.inventory.remove(i)
+                    self.defense += self.chestEq[0].armor
+                    self.luck += self.chestEq[0].luck
+                    self.stamina += self.chestEq[0].stamina
+                    self.iq += self.chestEq[0].iq
+                    self.agility += self.chestEq[0].agility
+                elif x[0].lower() == "n":
+                    self.inventory.remove(i)
+                    break
 
     def equipLegs(self):
         if len(self.legsEq) == 0:
@@ -279,6 +319,37 @@ class Hero(object):
                     print(i)
                     self.legsEq.append(i)
                     self.inventory.remove(i)
+                    self.defense += self.legsEq[0].armor
+                    self.luck += self.legsEq[0].luck
+                    self.stamina += self.legsEq[0].stamina
+                    self.iq += self.legsEq[0].iq
+                    self.agility += self.legsEq[0].agility
+        else:
+            print("Leggings are already equipped.")
+            print("You are currently wearing:")
+            print(self.legsEq[0])
+            print("Would you like to replace them with the following?")
+            print(i)
+            while True:
+                x = input("Yes or no?")
+                if x[0].lower() == "y":
+                    print("You replaced your leggings.")
+                    self.defense -= self.legsEq[0].armor
+                    self.luck -= self.legsEq[0].luck
+                    self.stamina -= self.legsEq[0].stamina
+                    self.iq -= self.legsEq[0].iq
+                    self.agility -= self.legsEq[0].agility
+                    self.legsEq.remove(self.legsEq[0])
+                    self.legsEq.append(i)
+                    self.inventory.remove(i)
+                    self.defense += self.legsEq[0].armor
+                    self.luck += self.legsEq[0].luck
+                    self.stamina += self.legsEq[0].stamina
+                    self.iq += self.legsEq[0].iq
+                    self.agility += self.legsEq[0].agility
+                elif x[0].lower() == "n":
+                    self.inventory.remove(i)
+                    break
 
     def equipBoots(self):
         if len(self.bootsEq) == 0:
@@ -289,6 +360,37 @@ class Hero(object):
                     print(i)
                     self.bootsEq.append(i)
                     self.inventory.remove(i)
+                    self.defense += self.bootsEq[0].armor
+                    self.luck += self.bootsEq[0].luck
+                    self.stamina += self.bootsEq[0].stamina
+                    self.iq += self.bootsEq[0].iq
+                    self.agility += self.bootsEq[0].agility
+        else:
+            print("Boots are already equipped.")
+            print("You are currently wearing:")
+            print(self.bootsEq[0])
+            print("Would you like to replace them with the following?")
+            print(i)
+            while True:
+                x = input("Yes or no?")
+                if x[0].lower() == "y":
+                    print("You replaced your boots.")
+                    self.defense -= self.bootsEq[0].armor
+                    self.luck -= self.bootsEq[0].luck
+                    self.stamina -= self.bootsEq[0].stamina
+                    self.iq -= self.bootsEq[0].iq
+                    self.agility -= self.bootsEq[0].agility
+                    self.bootsEq.remove(self.bootsEq[0])
+                    self.bootsEq.append(i)
+                    self.inventory.remove(i)
+                    self.defense += self.bootsEq[0].armor
+                    self.luck += self.bootsEq[0].luck
+                    self.stamina += self.bootsEq[0].stamina
+                    self.iq += self.bootsEq[0].iq
+                    self.agility += self.bootsEq[0].agility
+                elif x[0].lower() == "n":
+                    self.inventory.remove(i)
+                    break
 
     def equipGloves(self):
         if len(self.glovesEq) == 0:
@@ -299,6 +401,129 @@ class Hero(object):
                     print(i)
                     self.glovesEq.append(i)
                     self.inventory.remove(i)
+                    self.defense += self.glovesEq[0].armor
+                    self.luck += self.glovesEq[0].luck
+                    self.stamina += self.glovesEq[0].stamina
+                    self.iq += self.glovesEq[0].iq
+                    self.agility += self.glovesEq[0].agility
+        else:
+            print("Gloves are already equipped.")
+            print("You are currently wearing:")
+            print(self.glovesEq[0])
+            print("Would you like to replace them with the following?")
+            print(i)
+            while True:
+                x = input("Yes or no?")
+                if x[0].lower() == "y":
+                    print("You replaced your gloves.")
+                    self.defense -= self.glovesEq[0].armor
+                    self.luck -= self.glovesEq[0].luck
+                    self.stamina -= self.glovesEq[0].stamina
+                    self.iq -= self.glovesEq[0].iq
+                    self.agility -= self.glovesEq[0].agility
+                    self.glovesEq.remove(self.glovesEq[0])
+                    self.glovesEq.append(i)
+                    self.inventory.remove(i)
+                    self.defense += self.glovesEq[0].armor
+                    self.luck += self.glovesEq[0].luck
+                    self.stamina += self.glovesEq[0].stamina
+                    self.iq += self.glovesEq[0].iq
+                    self.agility += self.glovesEq[0].agility
+                elif x[0].lower() == "n":
+                    self.inventory.remove(i)
+                    break
+
+    def equipAll(self):
+        self.equipHelm()
+        self.equipChest()
+        self.equipLegs()
+        self.equipBoots()
+        self.equipGloves()
+
+    def equipWeapon(self):
+        for i in self.inventory:
+            x = type(i)
+            if ("Sword" in str(x) or "Bow" in str(x) or "Knife" in str(x) or "Staff" in str(x) or "Axe" in str(x)):
+                while True:
+                    x = input("Would you like to equip the weapon in your right or left hand?")
+                    if x.lower() == "right":
+                        if len(self.rightHandEq) == 0:
+                            print("You equipped a weapon in your right hand.")
+                            print(i)
+                            self.rightHandEq.append(i)
+                            self.inventory.remove(i)
+                            self.attack += self.rightHandEq[0].damage
+                            self.luck += self.rightHandEq[0].luck
+                            self.stamina += self.rightHandEq[0].stamina
+                            self.iq += self.rightHandEq[0].iq
+                            self.agility += self.rightHandEq[0].agility
+                            break
+                        else:
+                            print("Something is already equipped in your right hand:")
+                            print(self.rightHandEq[0])
+                            print("Would you like to replace it with the following?")
+                            print(i)
+                            while True:
+                                x = input("Yes or no?")
+                                if x[0].lower() == "y":
+                                    print("You replace what was in your right hand.")
+                                    self.attack -= self.rightHandEq[0].damage
+                                    self.luck -= self.rightHandEq[0].luck
+                                    self.stamina -= self.rightHandEq[0].stamina
+                                    self.iq -= self.rightHandEq[0].iq
+                                    self.agility -= self.rightHandEq[0].agility
+                                    self.rightHandEq.remove(self.rightHandEq[0])
+                                    self.rightHandEq.append(i)
+                                    self.inventory.remove(i)
+                                    self.attack += self.rightHandEq[0].damage
+                                    self.luck += self.rightHandEq[0].luck
+                                    self.stamina += self.rightHandEq[0].stamina
+                                    self.iq += self.rightHandEq[0].iq
+                                    self.agility += self.rightHandEq[0].agility
+                                elif x[0].lower() == "n":
+                                    self.inventory.remove(i)
+                                    break
+                    elif x.lower() == "left":
+                        if len(self.leftHandEq) == 0:
+                            print("You equipped a weapon in your left hand.")
+                            print(i)
+                            self.leftHandEq.append(i)
+                            self.inventory.remove(i)
+                            self.attack += self.leftHandEq[0].damage
+                            self.luck += self.leftHandEq[0].luck
+                            self.stamina += self.leftHandEq[0].stamina
+                            self.iq += self.leftHandEq[0].iq
+                            self.agility += self.leftHandEq[0].agility
+                            break
+                        else:
+                            print("Something is already equipped in your left hand:")
+                            print(self.leftHandEq[0])
+                            print("Would you like to replace it with the following?")
+                            print(i)
+                            while True:
+                                x = input("Yes or no?")
+                                if x[0].lower() == "y":
+                                    print("You replace what was in your left hand.")
+                                    self.attack -= self.leftHandEq[0].damage
+                                    self.luck -= self.leftHandEq[0].luck
+                                    self.stamina -= self.leftHandEq[0].stamina
+                                    self.iq -= self.leftHandEq[0].iq
+                                    self.agility -= self.leftHandEq[0].agility
+                                    self.leftHandEq.remove(self.leftHandEq[0])
+                                    self.leftHandEq.append(i)
+                                    self.inventory.remove(i)
+                                    self.attack += self.leftHandEq[0].damage
+                                    self.luck += self.leftHandEq[0].luck
+                                    self.stamina += self.leftHandEq[0].stamina
+                                    self.iq += self.leftHandEq[0].iq
+                                    self.agility += self.leftHandEq[0].agility
+                                elif x[0].lower() == "n":
+                                    self.inventory.remove(i)
+                                    break
+                    else:
+                        print("That is not valid choice of hand.")
+
+
 
     def __str__(self):
         return """
@@ -308,6 +533,4 @@ class Hero(object):
         Luck: {}
         Stamina: {}
         IQ: {}
-        Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.atkPower, self.defense, self.luck, self.stamina, self.iq, self.agility)
-
-
+        Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.attack, self.defense, self.luck, self.stamina, self.iq, self.agility)

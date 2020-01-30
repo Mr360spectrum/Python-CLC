@@ -5,6 +5,8 @@ import random
 
 class Equipment(object):
     RARITY = ("Trash", "Common", "Rare", "Epic", "Legendary")
+    WEAPONTYPES = ["Sword", "Bow", "Knife", "Staff", "Axe"]
+    ARMORTYPES = ["Helm", "Chest", "Legs", "Boots", "Gloves"]
     def __init__(self, eqType):
         self.rarityLevel, self.rareMod = self.pickRarity()
         self.eqType = eqType
@@ -23,7 +25,6 @@ class Equipment(object):
             return Equipment.RARITY[4], 32
     
 class Armor(Equipment):
-    ARMORTYPES = ["Helm", "Chest", "Legs", "Boots", "Gloves"]
     def __init__(self, aType):
         super(Armor, self).__init__("Armor")
         self.armorType = aType
@@ -90,7 +91,6 @@ class Gloves(Armor):
         self.luck = random.randint(0, 4) + self.rareMod
 
 class Weapon(Equipment):
-    WEAPONTYPES = ["Sword", "Bow", "Knife", "Staff", "Axe"]
     def __init__(self, wType):
         super(Weapon, self).__init__("Weapon")
         self.weaponType = wType
@@ -105,9 +105,10 @@ class Weapon(Equipment):
         Rarity Level: {}
         Damage: {}
         Stamina: {}
-        IQ: {}
         Agility: {}
-        """.format(self.weaponType, self.rarityLevel, self.damage, self.stamina, self.iq, self.agility)
+        IQ: {}
+        Luck: {}
+        """.format(self.weaponType, self.rarityLevel, self.damage, self.stamina, self.agility, self.iq, self.luck)
 
 class Sword(Weapon):
     def __init__(self):
@@ -115,6 +116,8 @@ class Sword(Weapon):
         self.damage = random.randint(5, 10) + self.rareMod
         self.stamina = random.randint(0, 3) + self.rareMod
         self.agility = random.randint(0, 3) + self.rareMod
+        self.iq = 0
+        self.luck = 0
 
 class Bow(Weapon):
     def __init__(self):
@@ -122,6 +125,8 @@ class Bow(Weapon):
         self.damage = random.randint(3, 7) + self.rareMod
         self.stamina = random.randint(0, 5) + self.rareMod
         self.agility = random.randint(0, 5) + self.rareMod
+        self.iq = 0
+        self.luck = 0
     
 class Knife(Weapon):
     def __init__(self):
@@ -129,6 +134,8 @@ class Knife(Weapon):
         self.damage = random.randint(2, 6) + self.rareMod
         self.stamina = random.randint(0, 8) + self.rareMod
         self.agility = random.randint(0, 8) + self.rareMod
+        self.iq = 0
+        self.luck = 0
     
 class Staff(Weapon):
     def __init__(self):
@@ -137,6 +144,7 @@ class Staff(Weapon):
         self.stamina = random.randint(0, 5) + self.rareMod
         self.agility = random.randint(0, 5) + self.rareMod
         self.iq = random.randint(0, 5) + self.rareMod
+        self.luck = random.randint(0, 5) + self.rareMod
 
 class Axe(Weapon):
     def __init__(self):
@@ -144,4 +152,6 @@ class Axe(Weapon):
         self.damage = random.randint(10, 15) + self.rareMod
         self.stamina = random.randint(0, 1) + self.rareMod
         self.agility = random.randint(0, 1) + self.rareMod
+        self.iq = 0
+        self.luck = 0
         

@@ -41,7 +41,7 @@ class Person():
             self.age += 1
             print(self.age)
             if self.age >= 100:
-                print("I am dead.")
+                self.die()
                 break
     def eat(self):
         while True:
@@ -53,6 +53,7 @@ class Person():
                 break
             if self.weight >= 300:
                 print("Heart attack!")
+                self.die()
                 break
             if foodChoice == "pizza":
                 self.weight += 3
@@ -67,6 +68,9 @@ class Person():
             else:
                 self.weight -= 5
             print(foodChoice)
+
+    def die(self):
+        print("I am dead.")
             
 
 
@@ -88,6 +92,21 @@ class Person():
 # steve.intro()
 # print(steve)
 
-bob = Person("Bob", "Goats", 90, "grey", "blue", 60)
+bob = Person("Bob", "Goats", 42, "grey", "blue", 60)
+# Bob will introduce himself, then start eating. He will continue eating until
+# his weight is no longer between 0 and 300, at which point, he will die.
 bob.intro()
 bob.eat()
+
+print()
+joe = Person("Joe", "Bill", 85, "brown", "brown", 120)
+# Joe will introduce himself, then begin to age up every second. Once he reaches
+# the age of 100, he will die.
+joe.intro()
+joe.ageUp()
+
+print()
+zapato = Person("Zapato", "Patos", 2, "yellow", "black", 15)
+# Zapato will introduce himself, then instantly die.
+zapato.intro()
+zapato.die()

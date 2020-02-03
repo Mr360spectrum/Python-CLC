@@ -25,3 +25,7 @@ print(player)
 player.equipWeapon()
 print(player.inventory)
 print(player)
+
+player.useHealthPotion()
+print(player.inventory)
+print(player)

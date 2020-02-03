@@ -522,15 +522,38 @@ class Hero(object):
                                     break
                     else:
                         print("That is not valid choice of hand.")
+    
+    def useHealthPotion(self):
+        if "Health potion" in self.inventory:
+            print("You used a health potion.")
+            if self.actualHealth < (self.maxHealth - 10):
+                self.actualHealth += 10
+            else:
+                self.actualHealth = self.maxHealth
+            print("You are now at " + str(self.actualHealth) + " HP.")
+        else:
+            print("You do not have any health potions.")
+    
+    def useManaPotion(self):
+        if "Mana potion" in self.inventory:
+            print("You used a Mana potion.")
+            if self.actualMana < (self.maxMana - 10):
+                self.actualMana += 10
+            else:
+                self.actualMana = self.maxMana
+            print("You are now at " + str(self.actualMana) + " mana points.")
+        else:
+            print("You do not have any health potions.")
 
 
 
     def __str__(self):
         return """
         Name: {} \t Race: {} \t Class: {} \t Level: {} \t XP: {}
+        HP: {}
         Attack: {}
         Defense: {}
         Luck: {}
         Stamina: {}
         IQ: {}
-        Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.attack, self.defense, self.luck, self.stamina, self.iq, self.agility)
+        Agility: {}""".format(self.name, self.race, self.playerClass, self.level, self.xp, self.actualHealth, self.attack, self.defense, self.luck, self.stamina, self.iq, self.agility)

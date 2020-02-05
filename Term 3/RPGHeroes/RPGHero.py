@@ -1,5 +1,5 @@
 # Karter Ence
-# RPG Characters
+# RPG Heroes
 # 1/17/2020
 import random
 from Equipment import *
@@ -139,7 +139,8 @@ class Hero(object):
         while True:
             try:
                 print(Hero.RACES)
-                x = input("Pick your race: ").capitalize()
+                print("Pick your race.")
+                x = input(": ").capitalize()
                 if x in Hero.RACES:
                     return x
             except:
@@ -149,23 +150,24 @@ class Hero(object):
         while True:
             try:
                 print(Hero.CLASSES)
-                x = input("Pick your class: ").capitalize()
+                print("Pick your class.")
+                x = input(": ").capitalize()
                 if x in Hero.CLASSES:
                     return x
             except:
-                print("Fortnite good.")
+                print("Not a good choice.")
     
     def enterName(self):
         while self.name == "":
-            self.name = input("Enter your character's name: ")
+            print("Enter your character's name.")
+            self.name = input(": ")
         return self.name
 
     def die(self):
         self.isAlive = False
         dropXP = 10 * self.level
-        # killer.giveXP(dropXP)
         item = random.choice(self.inventory)
-        # killer.giveItem(item)
+        return dropXP, item
 
     def levelUp(self):
         if self.xp >= self.levelUpNum:
@@ -193,11 +195,13 @@ class Hero(object):
             IQ: {}
             Agility: {}
             """.format(self.luck, self.stamina, self.iq, self.agility))
-            x = input("Which stat would you like to upgrade?").lower()
+            print("Which stat would you like to upgrade?")
+            x = input(": ").lower()
             y = 0
             while y == 0:
                 try:
-                    y = int(input("You have " + str(points) + " points to spend. How many would you like to put into your " + x + "?"))
+                    print("You have " + str(points) + " points to spend. How many would you like to put into your " + x + "?")
+                    y = int(input(": "))
                 except:
                     print("That is not a valid integer.")
                     y = 0
@@ -225,9 +229,6 @@ class Hero(object):
         if self.xp >= self.levelUpNum:
             self.levelUp()
 
-    def doAttack(self):
-        pass
-
     def equipHelm(self):
         if len(self.helmEq) == 0:
             for i in self.inventory:
@@ -249,7 +250,8 @@ class Hero(object):
             print("Would you like to replace them with the following?")
             print(i)
             while True:
-                x = input("Yes or no?")
+                print("Yes or no?")
+                x = input(": ")
                 if x[0].lower() == "y":
                     print("You replaced your helm.")
                     self.defense -= self.helmEq[0].armor
@@ -290,7 +292,8 @@ class Hero(object):
             print("Would you like to replace them with the following?")
             print(i)
             while True:
-                x = input("Yes or no?")
+                print("Yes or no?")
+                x = input(": ")
                 if x[0].lower() == "y":
                     print("You replaced your chestplate.")
                     self.defense -= self.chestEq[0].armor
@@ -331,7 +334,8 @@ class Hero(object):
             print("Would you like to replace them with the following?")
             print(i)
             while True:
-                x = input("Yes or no?")
+                print("Yes or no?")
+                x = input(": ")
                 if x[0].lower() == "y":
                     print("You replaced your leggings.")
                     self.defense -= self.legsEq[0].armor
@@ -372,7 +376,8 @@ class Hero(object):
             print("Would you like to replace them with the following?")
             print(i)
             while True:
-                x = input("Yes or no?")
+                print("Yes or no?")
+                x = input(": ")
                 if x[0].lower() == "y":
                     print("You replaced your boots.")
                     self.defense -= self.bootsEq[0].armor
@@ -413,7 +418,8 @@ class Hero(object):
             print("Would you like to replace them with the following?")
             print(i)
             while True:
-                x = input("Yes or no?")
+                print("Yes or no?")
+                x = input(": ")
                 if x[0].lower() == "y":
                     print("You replaced your gloves.")
                     self.defense -= self.glovesEq[0].armor
@@ -445,7 +451,8 @@ class Hero(object):
             x = type(i)
             if ("Sword" in str(x) or "Bow" in str(x) or "Knife" in str(x) or "Staff" in str(x) or "Axe" in str(x)):
                 while True:
-                    x = input("Would you like to equip the weapon in your right or left hand?")
+                    print("Would you like to equip the weapon in your right or left hand?")
+                    x = input(": ")
                     if x.lower() == "right":
                         if len(self.rightHandEq) == 0:
                             print("You equipped a weapon in your right hand.")
@@ -464,7 +471,8 @@ class Hero(object):
                             print("Would you like to replace it with the following?")
                             print(i)
                             while True:
-                                x = input("Yes or no?")
+                                print("Yes or no?")
+                                x = input(": ")
                                 if x[0].lower() == "y":
                                     print("You replace what was in your right hand.")
                                     self.attack -= self.rightHandEq[0].damage
@@ -501,7 +509,8 @@ class Hero(object):
                             print("Would you like to replace it with the following?")
                             print(i)
                             while True:
-                                x = input("Yes or no?")
+                                print("Yes or no?")
+                                x = input(": ")
                                 if x[0].lower() == "y":
                                     print("You replace what was in your left hand.")
                                     self.attack -= self.leftHandEq[0].damage
@@ -524,28 +533,220 @@ class Hero(object):
                         print("That is not valid choice of hand.")
     
     def useHealthPotion(self):
+        # if "Health potion" in self.inventory:
+        #     print("You used a health potion.")
+        #     if self.actualHealth < (self.maxHealth - 10):
+        #         self.actualHealth += 10
+        #     else:
+        #         self.actualHealth = self.maxHealth
+        #     print("You are now at " + str(self.actualHealth) + " HP.")
+        # else:
+        #     print("You do not have any health potions.")
         if "Health potion" in self.inventory:
-            print("You used a health potion.")
-            if self.actualHealth < (self.maxHealth - 10):
-                self.actualHealth += 10
-            else:
-                self.actualHealth = self.maxHealth
-            print("You are now at " + str(self.actualHealth) + " HP.")
+            for i in self.inventory:
+                if i == "Health potion":
+                    self.actualHealth = self.maxHealth
+                    self.inventory.remove(i)
+                    print("You used a health potion.")
+                    return
         else:
-            print("You do not have any health potions.")
-    
+            print("You have no health potions.")
     def useManaPotion(self):
+        # if "Mana potion" in self.inventory:
+        #     print("You used a Mana potion.")
+        #     if self.actualMana < (self.maxMana - 10):
+        #         self.actualMana += 10
+        #     else:
+        #         self.actualMana = self.maxMana
+        #     print("You are now at " + str(self.actualMana) + " mana points.")
+        # else:
+        #     print("You do not have any health potions.")
         if "Mana potion" in self.inventory:
-            print("You used a Mana potion.")
-            if self.actualMana < (self.maxMana - 10):
-                self.actualMana += 10
-            else:
-                self.actualMana = self.maxMana
-            print("You are now at " + str(self.actualMana) + " mana points.")
+            for i in self.inventory:
+                if i == "Mana potion":
+                    self.actualMana = self.maxMana
+                    self.inventory.remove(i)
+                    print("You used a mana potion.")
+                    return
         else:
-            print("You do not have any health potions.")
+            print("You have no mana potions.")
 
+    def doAttack(self):
+        attackPower = 0
+        roll = random.randint(1, 6)
+        if roll == 1:
+            print(self.name, "missed.")
+            return 0
+        if self.playerClass == "Warrior":
+            while True:
+                for i in range(len(self.atkList)):
+                    print(str(i + 1) + ".", self.atkList[i].capitalize())
+                print("4.", "Health potion" )
+                print("\nWhat attack would you like to use? (1-4)")
+                x = input(": ")
+                if x == "1":
+                    attackPower = ((self.attack + self.stamina) * roll) * 0.05
+                    break
+                elif x == "2":
+                    if self.stamina > 10:
+                        attackPower = ((self.attack + self.stamina) * roll) * 0.07
+                        self.stamina -= 10
+                        break
+                    else:
+                        print("Insufficient stamina.")
+                elif x == "3":
+                    if self.stamina > 20:
+                        attackPower = ((self.attack + self.stamina) * roll) * 0.1
+                        self.stamina -= 20
+                        break
+                    else:
+                        print("Insufficient stamina.")
+                elif x == "4":
+                    self.useHealthPotion()
+                    break
+                else:
+                    print("That is not an option.")
+        elif self.playerClass == "Mage":
+            while True:
+                for i in range(len(self.atkList)):
+                    print(str(i + 1) + ".", self.atkList[i].capitalize())
+                print("4. Health potion")
+                print("5. Mana potion")
+                print("\nWhat attack would you like to use? (1-4)")
+                x = input(": ")
+                if x == "1":
+                    if self.actualMana > 1:
+                        attackPower = ((self.attack + self.iq) * roll) * 0.05
+                        self.actualMana -= 1
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "2":
+                    if self.actualMana > 3:
+                        attackPower = ((self.attack + self.iq) * roll) * 0.07
+                        self.actualMana -= 3
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "3":
+                    if self.actualMana > 5:
+                        attackPower = ((self.attack + self.iq) * roll) * 0.1
+                        self.actualMana -= 5
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "4":
+                    self.useHealthPotion()
+                    break
+                elif x == "5":
+                    self.useManaPotion()
+                    break
+                else:
+                    print("That is not an option.")
+        elif self.playerClass == "Hunter":
+            while True:
+                for i in range(len(self.atkList)):
+                    print(str(i + 1) + ".", self.atkList[i].capitalize())
+                print("4. Health potion")
+                print("5. Mana potion")
+                print("\nWhat attack would you like to use? (1-4)")
+                x = input(": ")
+                if x == "1":
+                    if self.actualMana > 1:
+                        attackPower = ((self.attack + self.agility) * roll) * 0.05
+                        self.actualMana -= 1
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "2":
+                    if self.actualMana > 3:
+                        attackPower = ((self.attack + self.agility) * roll) * 0.07
+                        self.actualMana -= 3
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "3":
+                    if self.actualMana > 5:
+                        attackPower = ((self.attack + self.agility) * roll) * 0.1
+                        self.actualMana -= 5
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "4":
+                    self.useHealthPotion()
+                    break
+                elif x == "5":
+                    self.useManaPotion()
+                    break
+                else:
+                    print("That is not an option.")
+        elif self.playerClass == "Dog":
+            while True:
+                for i in range(len(self.atkList)):
+                    print(str(i + 1) + ".", self.atkList[i].capitalize())
+                print("4. Health potion")
+                print("5. Mana potion")
+                print("\nWhat attack would you like to use? (1-4)")
+                x = input(": ")
+                if x == "1":
+                    if self.actualMana > 1:
+                        attackPower = ((self.attack + self.luck) * roll) * 0.05
+                        self.actualMana -= 1
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "2":
+                    if self.actualMana > 3:
+                        attackPower = ((self.attack + self.luck) * roll) * 0.07
+                        self.actualMana -= 3
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "3":
+                    if self.actualMana > 5:
+                        attackPower = ((self.attack + self.luck) * roll) * 0.1
+                        self.actualMana -= 5
+                        break
+                    else:
+                        print("Insufficient mana.")
+                elif x == "4":
+                    self.useHealthPotion()
+                    break
+                elif x == "5":
+                    self.useManaPotion()
+                    break
+                else:
+                    print("That is not an option.")
+        crit = 20
+        if self.luck > 200:
+            crit = 15
+        roll = random.randint(1, crit)
+        if roll == 11:
+            attackPower = attackPower * 3
+        print(self.name, "did", attackPower, "damage.")
+        return attackPower
 
+    def defend(self, damage):
+        roll = random.randint(1, 20)
+        if roll == 20:
+            print("Attack blocked.")
+            damage = 0
+        if self.playerClass == "Warrior":
+            block = ((self.defense + self.stamina) * roll) * 0.025
+        elif self.playerClass == "Mage":
+            block = ((self.defense + self.iq) * roll) * 0.025
+        elif self.playerClass == "Hunter":
+            block = ((self.defense + self.agility) * roll) * 0.025
+        elif self.playerClass == "Dog":
+            block = ((self.defense + self.iq) * roll) * 0.025
+        print(self.name, "blocked", block, "damage.")
+        damageDealt = damage - block
+        if damageDealt >= 0:
+            self.actualHealth = self.actualHealth - damageDealt
+        else:
+            print("Attack blocked.")
+        if self.actualHealth <= 0:
+            self.isAlive = False
 
     def __str__(self):
         return """

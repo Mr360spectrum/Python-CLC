@@ -3,29 +3,40 @@
 # 1/24/2020
 from RPGHero import *
 from Equipment import *
+turn = 0
+notTurn = 1
 
-# player = Hero()
-# print(player)
-# while player.level < 10:
-#     xp = random.randint(10, 50)
-#     player.addXP(xp)
+def switchTurns(turn):
+    if turn == 0:
+        turn = 1
+        notTurn = 0
+    else:
+        turn = 0
+        notTurn = 1
+    return turn, notTurn
+players = []
 
-player = Hero()
-print(player.inventory)
-for i in player.inventory:
-    print(i)
+for i in range(2):
+    print("Creating player", i)
+    player = Hero()
+    players.append(player)
 
-print(player)
+for i in players:
+    i.popInv()
+    i.equipAll()
 
-player.equipAll()
-print(player.inventory)
+while players[0].isAlive:
+    x = players[turn].doAttack()
+    players[notTurn].defend(x)
+    if not players[1].isAlive:
+        xp, item = players[1].die()
+        player = Hero()
+        players[1] = player
+        players[turn].addXP(xp)
+        players[turn].addToInv(item)
+    else:
+        turn, notTurn = switchTurns(turn)
 
-print(player)
+print(players[0])
+print(players[1])
 
-player.equipWeapon()
-print(player.inventory)
-print(player)
-
-player.useHealthPotion()
-print(player.inventory)
-print(player)

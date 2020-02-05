@@ -165,6 +165,7 @@ class Hero(object):
 
     def die(self):
         self.isAlive = False
+        print(self.name, "died.")
         dropXP = 10 * self.level
         item = random.choice(self.inventory)
         return dropXP, item
@@ -732,13 +733,13 @@ class Hero(object):
             print("Attack blocked.")
             damage = 0
         if self.playerClass == "Warrior":
-            block = ((self.defense + self.stamina) * roll) * 0.025
+            block = ((self.defense + self.stamina) * roll) * 0.015
         elif self.playerClass == "Mage":
-            block = ((self.defense + self.iq) * roll) * 0.025
+            block = ((self.defense + self.iq) * roll) * 0.015
         elif self.playerClass == "Hunter":
-            block = ((self.defense + self.agility) * roll) * 0.025
+            block = ((self.defense + self.agility) * roll) * 0.015
         elif self.playerClass == "Dog":
-            block = ((self.defense + self.iq) * roll) * 0.025
+            block = ((self.defense + self.iq) * roll) * 0.015
         print(self.name, "blocked", block, "damage.")
         damageDealt = damage - block
         if damageDealt >= 0:

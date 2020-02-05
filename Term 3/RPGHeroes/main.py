@@ -36,7 +36,3 @@ while players[0].isAlive:
         players[turn].addToInv(item)
     else:
         turn, notTurn = switchTurns(turn)
-
-print(players[0])
-print(players[1])
-

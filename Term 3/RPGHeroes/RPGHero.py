@@ -248,7 +248,7 @@ class Hero(object):
             print("A helm is already equipped.")
             print("You are currently wearing:")
             print(self.helmEq[0])
-            print("Would you like to replace them with the following?")
+            print("Would you like to replace it with the following?")
             print(i)
             while True:
                 print("Yes or no?")

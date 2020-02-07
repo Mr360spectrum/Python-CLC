@@ -26,13 +26,21 @@ for i in players:
     i.equipAll()
 
 while players[0].isAlive:
+    print()
+    print("It's your turn.")
+    print(players[turn])
     x = players[turn].doAttack()
     players[notTurn].defend(x)
-    if not players[1].isAlive:
+    if players[1].isAlive == False:
+        print(players[1].name, "has died.")
         xp, item = players[1].die()
+        players[0].addXP(xp)
+        players[0].addToInv(item)
+        players[0].equipAll()
+        print("A new challenger approaches.")
         player = Hero()
+        player.equipAll()
         players[1] = player
-        players[turn].addXP(xp)
-        players[turn].addToInv(item)
-    else:
-        turn, notTurn = switchTurns(turn)
+    
+    turn, notTurn = switchTurns(turn)
+print(players[0].name, "has died.")

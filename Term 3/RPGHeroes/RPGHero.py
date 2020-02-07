@@ -589,14 +589,14 @@ class Hero(object):
                     attackPower = ((self.attack + self.stamina) * roll) * 0.05
                     break
                 elif x == "2":
-                    if self.stamina > 10:
+                    if self.stamina >= 10:
                         attackPower = ((self.attack + self.stamina) * roll) * 0.07
                         self.stamina -= 10
                         break
                     else:
                         print("Insufficient stamina.")
                 elif x == "3":
-                    if self.stamina > 20:
+                    if self.stamina >= 20:
                         attackPower = ((self.attack + self.stamina) * roll) * 0.1
                         self.stamina -= 20
                         break
@@ -619,14 +619,14 @@ class Hero(object):
                     attackPower = ((self.attack + self.iq) * roll) * 0.05
                     break
                 elif x == "2":
-                    if self.actualMana > 3:
+                    if self.actualMana >= 3:
                         attackPower = ((self.attack + self.iq) * roll) * 0.07
                         self.actualMana -= 3
                         break
                     else:
                         print("Insufficient mana.")
                 elif x == "3":
-                    if self.actualMana > 5:
+                    if self.actualMana >= 5:
                         attackPower = ((self.attack + self.iq) * roll) * 0.1
                         self.actualMana -= 5
                         break
@@ -652,10 +652,12 @@ class Hero(object):
                     attackPower = ((self.attack + self.agility) * roll) * 0.05
                     break
                 elif x == "2":
-                    attackPower = ((self.attack + self.agility) * roll) * 0.07
-                    break
+                    if self.actualMana >= 3:
+                        attackPower = ((self.attack + self.agility) * roll) * 0.07
+                        self.actualMana -= 3
+                        break
                 elif x == "3":
-                    if self.actualMana > 5:
+                    if self.actualMana >= 5:
                         attackPower = ((self.attack + self.agility) * roll) * 0.1
                         self.actualMana -= 5
                         break
@@ -682,14 +684,14 @@ class Hero(object):
                     self.actualMana -= 1
                     break
                 elif x == "2":
-                    if self.actualMana > 3:
+                    if self.actualMana >= 3:
                         attackPower = ((self.attack + self.luck) * roll) * 0.07
                         self.actualMana -= 3
                         break
                     else:
                         print("Insufficient mana.")
                 elif x == "3":
-                    if self.actualMana > 5:
+                    if self.actualMana >= 5:
                         attackPower = ((self.attack + self.luck) * roll) * 0.1
                         self.actualMana -= 5
                         break

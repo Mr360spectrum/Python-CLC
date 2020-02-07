@@ -616,12 +616,8 @@ class Hero(object):
                 print("\nWhat attack would you like to use? (1-4)")
                 x = input(": ")
                 if x == "1":
-                    if self.actualMana > 1:
-                        attackPower = ((self.attack + self.iq) * roll) * 0.05
-                        self.actualMana -= 1
-                        break
-                    else:
-                        print("Insufficient mana.")
+                    attackPower = ((self.attack + self.iq) * roll) * 0.05
+                    break
                 elif x == "2":
                     if self.actualMana > 3:
                         attackPower = ((self.attack + self.iq) * roll) * 0.07
@@ -653,19 +649,11 @@ class Hero(object):
                 print("\nWhat attack would you like to use? (1-4)")
                 x = input(": ")
                 if x == "1":
-                    if self.actualMana > 1:
-                        attackPower = ((self.attack + self.agility) * roll) * 0.05
-                        self.actualMana -= 1
-                        break
-                    else:
-                        print("Insufficient mana.")
+                    attackPower = ((self.attack + self.agility) * roll) * 0.05
+                    break
                 elif x == "2":
-                    if self.actualMana > 3:
-                        attackPower = ((self.attack + self.agility) * roll) * 0.07
-                        self.actualMana -= 3
-                        break
-                    else:
-                        print("Insufficient mana.")
+                    attackPower = ((self.attack + self.agility) * roll) * 0.07
+                    break
                 elif x == "3":
                     if self.actualMana > 5:
                         attackPower = ((self.attack + self.agility) * roll) * 0.1
@@ -690,12 +678,9 @@ class Hero(object):
                 print("\nWhat attack would you like to use? (1-4)")
                 x = input(": ")
                 if x == "1":
-                    if self.actualMana > 1:
-                        attackPower = ((self.attack + self.luck) * roll) * 0.05
-                        self.actualMana -= 1
-                        break
-                    else:
-                        print("Insufficient mana.")
+                    attackPower = ((self.attack + self.luck) * roll) * 0.05
+                    self.actualMana -= 1
+                    break
                 elif x == "2":
                     if self.actualMana > 3:
                         attackPower = ((self.attack + self.luck) * roll) * 0.07

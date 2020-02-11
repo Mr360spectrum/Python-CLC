@@ -30,10 +30,16 @@ while players[0].isAlive:
     print("It's your turn.")
     print(players[turn])
     x = players[turn].doAttack()
-    players[notTurn].defend(x)
+    if x == 0:
+        print("Attack missed.")
+    else:
+        players[notTurn].defend(x)
     if players[1].isAlive == False:
         print(players[1].name, "has died.")
         xp, item = players[1].die()
+
+        print(item)
+
         players[0].addXP(xp)
         players[0].addToInv(item)
         players[0].equipAll()

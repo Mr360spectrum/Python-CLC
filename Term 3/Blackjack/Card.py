@@ -46,19 +46,49 @@ class Hand(object):
         self.cards.remove(card)
         otherHand.add(card)
 
-myHand = Hand()
-yourHand = Hand()
-for i in range(5):
-    card = Card(random.choice(Card.RANKS), random.choice(Card.SUITS))
-    print(card)
-    myHand.add(card)
+class Deck(Hand):
+    def populate(self):
+        for suit in Card.SUITS:
+            for rank in Card.RANKS:
+                self.add(Card(rank, suit))
 
-print(myHand)
-print(yourHand)
+    def shuffle(self):
+        random.shuffle(self.cards)
 
-myHand.give(yourHand, myHand.cards[0])
-print(yourHand)
-print(myHand)
-myHand.clear()
-yourHand.clear()
-print(myHand, yourHand)
+    def deal(self, hands, perHand=1):
+        for rounds in range(perHand):
+            for hand in hands:
+                if self.cards:
+                    topCard = self.cards[0]
+                    self.give(hand, topCard)
+                else:
+                    print("Out of cards.")
+
+class PositionableCard(Card):
+    def __init__(self, rank, suit, faceUp = False):
+        super(PositionableCard, self).__init__(rank, suit)
+        self.isFaceUp = faceUp
+
+    def __str__(self):
+        if self.isFaceUp:
+            rep = super(PositionableCard, self). __str__()
+        else:
+            rep = """
+         _________
+        |c        |
+        |a       d|
+        |r   no  r|
+        |d       a|
+        |        c|
+        |_________|
+        """
+        return rep
+
+    def flip(self):
+        self.isFaceUp = not self.isFaceUp
+
+class PositionableDeck(Deck):
+    def populate(self):
+        for suit in Card.SUITS:
+            for rank in Card.RANKS:
+                self.add(PositionableCard(rank, suit))

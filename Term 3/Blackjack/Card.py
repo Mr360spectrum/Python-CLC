@@ -29,9 +29,9 @@ class Hand(object):
 
     def __str__(self):
         if self.cards:
-            rep = "Your hand:\n"
+            # rep = "Your hand:\n"
             for card in self.cards:
-                rep += str(card) + " "
+                rep = str(card) + " "
         else:
             rep = "Empty hand."
         return rep

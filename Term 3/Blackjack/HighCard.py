@@ -34,7 +34,7 @@ class HighCardDeck(Deck):
                 elif rank == "K":
                     value = 13
                 else:
-                    value = rank
+                    value = int(rank)
                 self.add(HighCard(rank, suit, value))
 
 def getName():

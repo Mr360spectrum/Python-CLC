@@ -4,15 +4,21 @@
 import random
 
 class Card(object):
+    """The cards themselves. They have ranks, suits, and can be flipped."""
     RANKS = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
     SUITS = ("♤", "♥", "♢", "♣")
     
-    def __init__(self, rank, suit):
+    def __init__(self, rank, suit, faceUp=True):
         self.rank = rank
         self.suit = suit
+        self.isFaceUp = faceUp
+
+    def flip(self):
+        self.isFaceUp = not self.isFaceUp
 
     def __str__(self):
-        rep = str.format("""
+        if self.isFaceUp:
+            rep = str.format("""
          _________
         |{0:2}       |
         |{1:2}       |
@@ -21,9 +27,20 @@ class Card(object):
         |       {1:2}|
         |_________|
         """, self.rank, self.suit)
-        return rep
+        else:
+            rep = """
+         _________
+        |c        |
+        |a       d|
+        |r   no  r|
+        |d       a|
+        |        c|
+        |_________|
+        """
+            return rep
 
 class Hand(object):
+    """The thing that holds cards."""
     def __init__(self):
         self.cards = []
 
@@ -47,6 +64,7 @@ class Hand(object):
         otherHand.add(card)
 
 class Deck(Hand):
+    """A deck of playing cards. Can be populated with cards, shuffled, and can deal out cards."""
     def populate(self):
         for suit in Card.SUITS:
             for rank in Card.RANKS:
@@ -64,31 +82,8 @@ class Deck(Hand):
                 else:
                     print("Out of cards.")
 
-class PositionableCard(Card):
-    def __init__(self, rank, suit, faceUp = False):
-        super(PositionableCard, self).__init__(rank, suit)
-        self.isFaceUp = faceUp
-
-    def __str__(self):
-        if self.isFaceUp:
-            rep = super(PositionableCard, self). __str__()
-        else:
-            rep = """
-         _________
-        |c        |
-        |a       d|
-        |r   no  r|
-        |d       a|
-        |        c|
-        |_________|
-        """
-        return rep
-
-    def flip(self):
-        self.isFaceUp = not self.isFaceUp
-
-class PositionableDeck(Deck):
-    def populate(self):
-        for suit in Card.SUITS:
-            for rank in Card.RANKS:
-                self.add(PositionableCard(rank, suit))
+if __name__ == "__main__":
+    print("This is a module with classes for playing cards.")
+    print("It is not meant to be run by itself.")
+    print("Press the enter key to exit.")
+    input()

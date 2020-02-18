@@ -65,21 +65,21 @@ def getName():
         name = input(": ")
     return name
 
-def findWinner(hands, names):
-    values = []
-    winMessage = ""
-    for hand in hands:
-        for card in hand.cards:
-            value = card.value
-            values.append(value)
-    highest = max(values)
-    if values.count(int(highest)) > 1:
-        winMessage = "It's a tie!"
-        return winMessage
-    highestIndex = values.index(highest)
-    winner = names[highestIndex]
-    winMessage = "The winner is: " + winner
-    return winMessage
+# def findWinner(hands, names):
+#     values = []
+#     winMessage = ""
+#     for hand in hands:
+#         for card in hand.cards:
+#             value = card.value
+#             values.append(value)
+#     highest = max(values)
+#     if values.count(int(highest)) > 1:
+#         winMessage = "It's a tie!"
+#         return winMessage
+#     highestIndex = values.index(highest)
+#     winner = names[highestIndex]
+#     winMessage = "The winner is: " + winner
+#     return winMessage
 
 def main():
     print("How many players are there?")

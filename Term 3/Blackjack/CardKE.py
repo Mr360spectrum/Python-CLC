@@ -14,6 +14,7 @@ class Card(object):
         self.isFaceUp = faceUp
 
     def flip(self):
+        # Invert isFaceUp
         self.isFaceUp = not self.isFaceUp
 
     def __str__(self):
@@ -37,7 +38,7 @@ class Card(object):
         |        c|
         |_________|
         """
-            return rep
+        return rep
 
 class Hand(object):
     """The thing that holds cards."""
@@ -48,6 +49,7 @@ class Hand(object):
         if self.cards:
             # rep = "Your hand:\n"
             for card in self.cards:
+                # Display each card
                 rep = str(card) + " "
         else:
             rep = "Empty hand."

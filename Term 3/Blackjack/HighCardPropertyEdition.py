@@ -1,7 +1,7 @@
 # Karter Ence
 # High Card (Property Edition)
 # 2/13/2020
-from Card import *
+from CardKE import *
 
 class HighCard(Card):
     def __init__(self, rank, suit):

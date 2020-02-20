@@ -3,7 +3,7 @@
 # 2/13/2020
 from Card import *
 
-class HighCard(PositionableCard):
+class HighCard(Card):
     def __init__(self, rank, suit):
         super(HighCard, self).__init__(rank, suit, faceUp=True)
 

@@ -1,11 +1,13 @@
 import Cards as C
 import Games as G
 
+
 class WarCard(C.Card):
     """A War Card"""
 
     @property
     def value(self):
+        # Find the value of the card using its rank
         if WarCard.RANKS.index(self.rank) + 1 == 1:
             v = 14
         else:
@@ -35,40 +37,47 @@ class WarDeck(C.Deck):
 
 class WarPot(C.Hand):
     """The Pot which takes from the Table and gives to the Overall Winner."""
-    def giveCards(self, winner):
-        for c in self.cards:
-            self.give(winner, c)
+    def war(self, players):
+        # If any of the players has less than 4 cards at the beginning of war,
+        # clear their hand. This will determine who wins and who loses later on.
+        if len(players[0].cards) < 4:
+            players[0].clear()
+        elif len(players[1].cards) < 4:
+            players[1].clear()
+        else:
+            print("Time for War")
+            # Each player gives 3 cards to the war pot
+            for player in players:
+                    for i in range(3):
+                        player.give(self, player.cards[0])
+
+    def giveCards(self, players, winner):
+        if winner != "Tie":
+            # Give the winner all of the cards
+            for i in range(len(self.cards)):
+                self.give(players[winner], self.cards[0])
+        else:
+            self.war(players)
 
 
 class WarTable(C.Hand):
 
-    def give(self, otherHand, cards, winner):
-        for card in cards:
-            otherHand.add(otherHand, card)
-            self.cards.remove(card)
-        WarPot.giveCards(winner)
-
-    def findWinner(self, players):
-        goToWar = False
+    def findWinner(self, WarPot, players):
+        # If a player has no cards, the other one wins.
         if self.cards[0].value > self.cards[1].value:
-            print("Player 1 wins.")
-            self.give(WarPot, self.cards, players[0])
+            print(f"{players[0].name} wins.")
+            winner = 0
         elif self.cards[0].value < self.cards[1].value:
-            print("Player 2 wins.")
-            self.give(WarPot, self.cards, players[1])
+            print(f"{players[1].name} wins.")
+            winner = 1
         else:
-            print("Time for War")
-            goToWar = True
-        return goToWar
+            winner = "Tie"
+        for i in range(len(self.cards)):
+            self.give(WarPot, self.cards[0])
+        return winner
 
 
 class WarPlayer(WarHand):
-
-    def playCard(self, otherHand):
-        print(self.cards)
-        self.give(otherHand, self.cards[0])
-        print(self.cards[0])
-        self.cards.remove(self.cards[0])
 
     def win(self):
         print(f"{self.name} has crushed the competition!")
@@ -91,27 +100,27 @@ class WarGame(object):
         self.table = WarTable()
         self.pot = WarPot()
 
-    def war(self):
-        for player in self.players:
-            for i in range(3):
-                player.give(self.pot, player.cards[0])
-            player.give(self.table, player.cards[0])
-
     def play(self):
+        playing = True
         self.deck.deal(self.players, perHand=26)
-        for player in self.players:
-            player.playCard(self.table)
-        goToWar = self.table.findWinner(self.players)
-        while goToWar:
-            self.war()
-            goToWar = self.table.findWinner(self.players)
-        if not player[0].cards:
-            player[0].lose()
-            player[1].win()
-        elif not player[1].cards:
-            player[1].lose()
-            player[0].win()
-
+        while playing:
+            for player in self.players:
+                # Print both cards, then each player plays that card
+                print(player.cards[0])
+                player.give(self.table, player.cards[0])
+            input("Press Enter to continue")
+            # Find the winner
+            winner = self.table.findWinner(self.pot, self.players)
+            # The pot give the winner all cards
+            self.pot.giveCards(self.players, winner)
+            if not self.players[0].cards:
+                playing = False
+                self.players[0].lose()
+                self.players[1].win()
+            if not self.players[1].cards:
+                playing = False
+                self.players[1].lose()
+                self.players[0].win()
 
 def main():
     print("\t\tWelcome to War!\n")
@@ -119,23 +128,12 @@ def main():
     for i in range(2):
         name = input(f"Enter player {i + 1}'s name: ")
         names.append(name)
-    game = WarGame(names)
 
     again = None
 
     while again != "n":
+        game = WarGame(names)
         game.play()
-        again = G.yes_no("\nDo you want to play again? (Y/N)")
+        again = G.askYesNo("\nDo you want to play again? (Y/N)")
 
 main()
-
-
-
-
-
-
-
-
-
-
-

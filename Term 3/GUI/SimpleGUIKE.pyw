@@ -6,7 +6,7 @@ from tkinter import *
 root = Tk()
 
 root.title("Simple GUI")
-root.geometry("500x500")
+root.geometry("500x700")
 
 app = Frame(root)
 app.grid()
@@ -35,11 +35,15 @@ lbl11 = Label(app, text="Why are you like this?")
 lbl11.grid()
 lbl2 = Label(app, text="This is way too many words.")
 lbl2.grid()
-lbl3 = Label(app, text="Why is it 15 labels?")c
+lbl3 = Label(app, text="Why is it 15 labels?")
 lbl3.grid()
 lbl14 = Label(app, text="I don't like this so much.")
 lbl14.grid()
 lbl15 = Label(app, text="Oh my goodness, so many words")
 lbl15.grid()
+
+for i in range(15):
+    lblLoop = Label(app, text="This is not okey dokey")
+    lblLoop.grid()
 
 root.mainloop()

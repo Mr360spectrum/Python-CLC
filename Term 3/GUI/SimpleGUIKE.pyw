@@ -35,7 +35,7 @@ lbl11 = Label(app, text="Why are you like this?")
 lbl11.grid()
 lbl2 = Label(app, text="This is way too many words.")
 lbl2.grid()
-lbl3 = Label(app, text="Why is it 15 labels?")
+lbl3 = Label(app, text="Why is it 15 labels?")c
 lbl3.grid()
 lbl14 = Label(app, text="I don't like this so much.")
 lbl14.grid()

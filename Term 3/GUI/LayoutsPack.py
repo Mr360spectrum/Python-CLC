@@ -1,10 +1,10 @@
 # Karter Ence
-# Layouts 2
+# Layouts 2 (Pack)
 # 3/11/2020
 from tkinter import *
 
 root = Tk()
-root.geometry("500x400")
+root.geometry("500x560")
 root.title("program.exe")
 
 top = Frame(root, bg="red", height=100, width=500)

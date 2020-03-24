@@ -44,7 +44,7 @@ class Application(Frame):
         self.pineappleChecked = BooleanVar()
 
         self.toppings = ["Pepperoni", "Ham", "Bacon", "Sausage", "Anchovies", "Mushrooms", "Olives", "Peppers", "Onion", "Pineapple"]
-        self.boolVars = [self.pepperoniChecked, self.hamChecked, self.baconChecked, self.sausageChecked, self.anchoviesChecked, self.mushroomsChecked, self.olivesChecked, self.peppersChecked, self.onionChecked, self.pineappleChecked]
+        self.intVars = [self.pepperoniChecked, self.hamChecked, self.baconChecked, self.sausageChecked, self.anchoviesChecked, self.mushroomsChecked, self.olivesChecked, self.peppersChecked, self.onionChecked, self.pineappleChecked]
 
         Label(self, text="Toppings:").grid(row=6, column=0, sticky=W)
         colx = 1
@@ -57,7 +57,9 @@ class Application(Frame):
                 colx = 1
             Checkbutton(self,
                         text = self.toppings[i],
-                        variable=self.boolVars[i],
+                        variable=self.intVars[i],
+                        onvalue = True,
+                        offvalue = False,
                         command=self.getToppings).grid(row=rowx, column=colx, sticky=W)
             colx += 1
 
@@ -73,32 +75,30 @@ class Application(Frame):
         # for i in range(len(toppings)):
         #     self.top.insert(END, toppings[i])
 
-
-
     def getSize(self):
         self.sizeOrdered = self.size.get()
         print(self.sizeOrdered)
     def getToppings(self):
         self.toppingsOrdered = []
-        if self.pepperoniChecked:
+        if self.pepperoniChecked.get():
             self.toppingsOrdered.append(self.toppings[0])
-        if self.hamChecked:
+        if self.hamChecked.get():
             self.toppingsOrdered.append(self.toppings[1])
-        if self.baconChecked:
-            self.toppings4Ordered.append(self.toppings[2])
-        if self.sausageChecked:
+        if self.baconChecked.get():
+            self.toppingsOrdered.append(self.toppings[2])
+        if self.sausageChecked.get():
             self.toppingsOrdered.append(self.toppings[3])
-        if self.anchoviesChecked:
+        if self.anchoviesChecked.get():
             self.toppingsOrdered.append(self.toppings[4])
-        if self.mushroomsChecked:
+        if self.mushroomsChecked.get():
             self.toppingsOrdered.append(self.toppings[5])
-        if self.olivesChecked:
+        if self.olivesChecked.get():
             self.toppingsOrdered.append(self.toppings[6])
-        if self.peppersChecked:
+        if self.peppersChecked.get():
             self.toppingsOrdered.append(self.toppings[7])
-        if self.onionChecked:
+        if self.onionChecked.get():
             self.toppingsOrdered.append(self.toppings[8])
-        if self.pineappleChecked:
+        if self.pineappleChecked.get():
             self.toppingsOrdered.append(self.toppings[9])
         print(self.toppingsOrdered)
             

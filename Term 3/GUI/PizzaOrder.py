@@ -9,7 +9,7 @@ class Application(Frame):
     def createWidgets(self):
         Label(self, text="Customer name: ").grid(row=0, column=0, sticky=W)
         customerName = Entry(self)
-        customerName.grid(row=0, column=1, sticky=W)
+        customerName.grid(row=0, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Customer address: ").grid(row=1, column=0, sticky=W)
         customerAddress = Entry(self)
@@ -24,40 +24,84 @@ class Application(Frame):
         customerNumber.grid(row=3, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Pizza size: ").grid(row=4, column=0, sticky=W)
+        
         self.size = StringVar()
         self.size.set(None)
-        Radiobutton(self, text = "Small", value = "Small", command = self.getSize).grid(row=4, column=1)
-        Radiobutton(self, text = "Medium", value = "Medium", command = self.getSize).grid(row=4, column=2)
-        Radiobutton(self, text = "Large", value = "Large", command = self.getSize).grid(row=4, column=3)
-        Radiobutton(self, text = "X Large", value = "X Large", command = self.getSize).grid(row=4, column=4)
+        sizes = ["Small", "Medium", "Large", "X Large", "Family"]
+        for i in range(len(sizes)):
+            Radiobutton(self, text = sizes[i], value = sizes[i], command = self.getSize).grid(row=4, column=i+1, sticky=W)
     
-        Label(self, text="Toppings:").grid(row=5, column=0, sticky=W)
         self.pepperoniChecked = BooleanVar()
-        Checkbutton(self, text="Pepperoni", variable=self.pepperoniChecked, command=self.getToppings).grid(row=6, column=1, sticky=W)
         self.hamChecked = BooleanVar()
-        Checkbutton(self, text="Ham", variable=self.hamChecked, command=self.getToppings).grid(row=6, column=2, sticky=W)
         self.baconChecked = BooleanVar()
-        Checkbutton(self, text="Bacon", variable=self.baconChecked, command=self.getToppings).grid(row=6, column=3, sticky=W)
         self.sausageChecked = BooleanVar()
-        Checkbutton(self, text="Sausage", variable=self.sausageChecked, command=self.getToppings).grid(row=6, column=4, sticky=W) 
         self.chickenChecked = BooleanVar()
-        Checkbutton(self, text="Chicken", variable=self.chickenChecked, command=self.getToppings).grid(row=6, column=5, sticky=W)
         self.anchoviesChecked = BooleanVar()
-        Checkbutton(self, text="Anchovies", variable=self.anchoviesChecked, command=self.getToppings).grid(row=7, column=1, sticky=W)
         self.mushroomsChecked = BooleanVar()   
-        Checkbutton(self, text="Mushrooms", variable=self.mushroomsChecked, command=self.getToppings).grid(row=7, column=2, sticky=W)
         self.olivesChecked = BooleanVar()   
-        Checkbutton(self, text="Olives", variable=self.olivesChecked, command=self.getToppings).grid(row=7, column=3, sticky=W)
         self.peppersChecked = BooleanVar()
-        Checkbutton(self, text="Peppers", variable=self.peppersChecked, command=self.getToppings).grid(row=7, column=4, sticky=W)
-        self.onionChecked = BooleanVar()         
-        Checkbutton(self, text="Onion", variable=self.onionChecked, command=self.getToppings).grid(row=7, column=5, sticky=W)
- 
+        self.onionChecked = BooleanVar()
+        self.pineappleChecked = BooleanVar()
+
+        self.toppings = ["Pepperoni", "Ham", "Bacon", "Sausage", "Anchovies", "Mushrooms", "Olives", "Peppers", "Onion", "Pineapple"]
+        self.boolVars = [self.pepperoniChecked, self.hamChecked, self.baconChecked, self.sausageChecked, self.anchoviesChecked, self.mushroomsChecked, self.olivesChecked, self.peppersChecked, self.onionChecked, self.pineappleChecked]
+
+        Label(self, text="Toppings:").grid(row=6, column=0, sticky=W)
+        colx = 1
+        rowx = 6
+        for i in range(len(self.toppings)):
+            col = i+1
+            if col == 6:
+                rowx += 1
+            if col == 6:
+                colx = 1
+            Checkbutton(self,
+                        text = self.toppings[i],
+                        variable=self.boolVars[i],
+                        command=self.getToppings).grid(row=rowx, column=colx, sticky=W)
+            colx += 1
+
+        Label(self, text="Crust type:").grid(row=8, column=0, sticky=W)
+        crustType = ["Stuffed Crust", "Thin", "Deep Dish", "Chicago Deep Dish", "Pan", "Normal", "Gluten-free"]
+        self.crust = Listbox(self)
+        self.crust.grid(row=9, column=1, columnspan=2)
+        for i in range(len(crustType)):
+            self.crust.insert(END, crustType[i])
+
+        # self.top = Listbox(self, selectmode=MULTIPLE)
+        # self.top.grid(row=9, column=3, columnspan=2)
+        # for i in range(len(toppings)):
+        #     self.top.insert(END, toppings[i])
+
+
 
     def getSize(self):
-        pass
+        self.sizeOrdered = self.size.get()
+        print(self.sizeOrdered)
     def getToppings(self):
-        pass 
+        self.toppingsOrdered = []
+        if self.pepperoniChecked:
+            self.toppingsOrdered.append(self.toppings[0])
+        if self.hamChecked:
+            self.toppingsOrdered.append(self.toppings[1])
+        if self.baconChecked:
+            self.toppings4Ordered.append(self.toppings[2])
+        if self.sausageChecked:
+            self.toppingsOrdered.append(self.toppings[3])
+        if self.anchoviesChecked:
+            self.toppingsOrdered.append(self.toppings[4])
+        if self.mushroomsChecked:
+            self.toppingsOrdered.append(self.toppings[5])
+        if self.olivesChecked:
+            self.toppingsOrdered.append(self.toppings[6])
+        if self.peppersChecked:
+            self.toppingsOrdered.append(self.toppings[7])
+        if self.onionChecked:
+            self.toppingsOrdered.append(self.toppings[8])
+        if self.pineappleChecked:
+            self.toppingsOrdered.append(self.toppings[9])
+        print(self.toppingsOrdered)
+            
 
 def main():
     root = Tk()

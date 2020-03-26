@@ -8,20 +8,20 @@ class Application(Frame):
 
     def createWidgets(self):
         Label(self, text="Customer name: ").grid(row=0, column=0, sticky=W)
-        customerName = Entry(self)
-        customerName.grid(row=0, column=1, columnspan=2, sticky=W)
+        self.customerName = Entry(self, width=50)
+        self.customerName.grid(row=0, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Customer address: ").grid(row=1, column=0, sticky=W)
-        customerAddress = Entry(self)
-        customerAddress.grid(row=1, column=1, columnspan=2, sticky=W)
+        self.customerAddress = Entry(self, width=50)
+        self.customerAddress.grid(row=1, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Customer phone number: ").grid(row=2, column=0, sticky=W)
-        customerNumber = Entry(self)
-        customerNumber.grid(row=2, column=1, columnspan=2, sticky=W)
+        self.customerNumber = Entry(self, width=50)
+        self.customerNumber.grid(row=2, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Customer Email: ").grid(row=3, column=0, sticky=W)
-        customerNumber = Entry(self)
-        customerNumber.grid(row=3, column=1, columnspan=2, sticky=W)
+        self.customerNumber = Entry(self, width=50)
+        self.customerNumber.grid(row=3, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Pizza size: ").grid(row=4, column=0, sticky=W)
         
@@ -29,7 +29,7 @@ class Application(Frame):
         self.size.set(None)
         sizes = ["Small", "Medium", "Large", "X Large", "Family"]
         for i in range(len(sizes)):
-            Radiobutton(self, text = sizes[i], value = sizes[i], command = self.getSize).grid(row=4, column=i+1, sticky=W)
+            Radiobutton(self, text = sizes[i], variable= self.size, value = sizes[i], command = self.getSize).grid(row=4, column=i+1, sticky=W)
     
         self.pepperoniChecked = BooleanVar()
         self.hamChecked = BooleanVar()
@@ -66,7 +66,7 @@ class Application(Frame):
         Label(self, text="Crust type:").grid(row=8, column=0, sticky=W)
         crustType = ["Stuffed Crust", "Thin", "Deep Dish", "Chicago Deep Dish", "Pan", "Normal", "Gluten-free"]
         self.crust = Listbox(self)
-        self.crust.grid(row=9, column=1, columnspan=2)
+        self.crust.grid(row=9, column=0, columnspan=2)
         for i in range(len(crustType)):
             self.crust.insert(END, crustType[i])
 
@@ -74,6 +74,32 @@ class Application(Frame):
         # self.top.grid(row=9, column=3, columnspan=2)
         # for i in range(len(toppings)):
         #     self.top.insert(END, toppings[i])
+
+        # Drink selection combo box
+        from tkinter import ttk
+        self.drinkChecked = BooleanVar()
+        Checkbutton(self,
+                    text="Would you like a drink?",
+                    variable= self.drinkChecked,
+                    command=self.selectDrink
+                    ).grid(row=8, column=2, sticky=W)
+        Label(self, text="Choose your drink:").grid(row=8, column=3)
+        self.drinkSelection = ttk.Combobox(self, 
+                                      values=["Pepsi", "Coca-Cola", "Root beer", "Sprite", "Surge", 
+                                              "Fanta Orange", "Fanta Grape", "Fanta Strawberry", "Dr. Pepper", "Cream Soda",
+                                              "Lemonade", "Mountain Dew", "Mountain Dew Code Red", "Mountain Dew Voltage", 
+                                              "Mello Yello"],
+                                      state="disable",)
+        self.drinkSelection.grid(row=9, column=3, sticky=N)
+        self.drinkSelection.current(8)
+
+        # Drink size selection spinner
+        Label(self, text="Choose your drink size").grid(row=8, column=5)
+        drinkSize = Spinbox(self, values=(64,8,12,16,20,24,32,44,64), state="readonly")
+        drinkSize.grid(row=9, column=5, sticky=N)
+
+        Button(self, text="Submit order", command=self.createOrder).grid(row=10, column=0, columnspan=6)
+        self.orderSummary = Text(self, wrap=WORD).grid(row=11, column=0, columnspan=6)
 
     def getSize(self):
         self.sizeOrdered = self.size.get()
@@ -101,7 +127,19 @@ class Application(Frame):
         if self.pineappleChecked.get():
             self.toppingsOrdered.append(self.toppings[9])
         print(self.toppingsOrdered)
-            
+
+    def selectDrink(self):
+        if self.drinkChecked.get():
+            self.drinkSelection.configure(state="readonly")
+        else:
+            self.drinkSelection.configure(state="disable")
+    
+    def createOrder(self):
+        order = "Name: " + self.customerName.get() + "\n" + "Address: " + self.customerAddress.get() + "\n"
+        test = self.customerAddress.get()
+
+        self.orderSummary.delete(0.0,END)
+        self.orderSummary.insert(0.0, test)
 
 def main():
     root = Tk()

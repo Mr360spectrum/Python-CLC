@@ -20,8 +20,8 @@ class Application(Frame):
         self.customerNumber.grid(row=2, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Customer Email: ").grid(row=3, column=0, sticky=W)
-        self.customerNumber = Entry(self, width=50)
-        self.customerNumber.grid(row=3, column=1, columnspan=2, sticky=W)
+        self.customerEmail = Entry(self, width=50)
+        self.customerEmail.grid(row=3, column=1, columnspan=2, sticky=W)
 
         Label(self, text="Pizza size: ").grid(row=4, column=0, sticky=W)
         
@@ -70,10 +70,10 @@ class Application(Frame):
         for i in range(len(crustType)):
             self.crust.insert(END, crustType[i])
 
-        # self.top = Listbox(self, selectmode=MULTIPLE)
-        # self.top.grid(row=9, column=3, columnspan=2)
-        # for i in range(len(toppings)):
-        #     self.top.insert(END, toppings[i])
+        self.top = Listbox(self, selectmode=MULTIPLE)
+        self.top.grid(row=9, column=3, columnspan=2)
+        for i in range(len(toppings)):
+            self.top.insert(END, toppings[i])
 
         # Drink selection combo box
         from tkinter import ttk
@@ -95,15 +95,16 @@ class Application(Frame):
 
         # Drink size selection spinner
         Label(self, text="Choose your drink size").grid(row=8, column=5)
-        drinkSize = Spinbox(self, values=(64,8,12,16,20,24,32,44,64), state="readonly")
-        drinkSize.grid(row=9, column=5, sticky=N)
+        self.drinkSize = Spinbox(self, values=(64,8,12,16,20,24,32,44,64), state="readonly")
+        self.drinkSize.grid(row=9, column=5, sticky=N)
 
         Button(self, text="Submit order", command=self.createOrder).grid(row=10, column=0, columnspan=6)
-        self.orderSummary = Text(self, wrap=WORD).grid(row=11, column=0, columnspan=6)
+        self.orderSummary = Text(self, wrap=WORD)
+        self.orderSummary.grid(row=11, column=0, columnspan=6)
 
     def getSize(self):
         self.sizeOrdered = self.size.get()
-        print(self.sizeOrdered)
+
     def getToppings(self):
         self.toppingsOrdered = []
         if self.pepperoniChecked.get():
@@ -135,11 +136,30 @@ class Application(Frame):
             self.drinkSelection.configure(state="disable")
     
     def createOrder(self):
-        order = "Name: " + self.customerName.get() + "\n" + "Address: " + self.customerAddress.get() + "\n"
-        test = self.customerAddress.get()
+        name = self.customerName.get()
+        address = self.customerAddress.get()
+        phone = self.customerNumber.get()
+        email = self.customerEmail.get()
+        size = self.sizeOrdered
+        toppings = self.toppingsOrdered
+        crust = self.crust.get(ACTIVE)
+        if self.drinkChecked.get():
+            drink = self.drinkSelection.get()
+            drinkSize = self.drinkSize.get()
+        else:
+            drink = "N/A"
+            drinkSize = "N/A"
 
-        self.orderSummary.delete(0.0,END)
-        self.orderSummary.insert(0.0, test)
+        self.orderSummary.delete(0.0, END)
+        self.orderSummary.insert(0.0, "Name: " + name + "\n")
+        self.orderSummary.insert(100.0, "Address: " + address + "\n")
+        self.orderSummary.insert(200.0, "Phone: " + phone + "\n")
+        self.orderSummary.insert(300.0, "Email: " + email + "\n")
+        self.orderSummary.insert(400.0, "Size: " + size + "\n")
+        self.orderSummary.insert(500.0, "Toppings: " + str(toppings) + "\n")
+        self.orderSummary.insert(600.0, "Crust type: " + crust + "\n")
+        self.orderSummary.insert(700.0, "Drink: " + drink + "\n")
+        self.orderSummary.insert(800.0, "Drink size: " + drinkSize + "\n")
 
 def main():
     root = Tk()

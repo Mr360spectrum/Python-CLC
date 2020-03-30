@@ -70,11 +70,6 @@ class Application(Frame):
         for i in range(len(crustType)):
             self.crust.insert(END, crustType[i])
 
-        self.top = Listbox(self, selectmode=MULTIPLE)
-        self.top.grid(row=9, column=3, columnspan=2)
-        for i in range(len(toppings)):
-            self.top.insert(END, toppings[i])
-
         # Drink selection combo box
         from tkinter import ttk
         self.drinkChecked = BooleanVar()

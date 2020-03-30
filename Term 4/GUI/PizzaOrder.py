@@ -1,3 +1,7 @@
+# Karter Ence
+# Pizza Order Form
+# 3/30/2020
+
 from tkinter import *
 
 class Application(Frame):
@@ -122,7 +126,6 @@ class Application(Frame):
             self.toppingsOrdered.append(self.toppings[8])
         if self.pineappleChecked.get():
             self.toppingsOrdered.append(self.toppings[9])
-        print(self.toppingsOrdered)
 
     def selectDrink(self):
         if self.drinkChecked.get():
@@ -131,12 +134,32 @@ class Application(Frame):
             self.drinkSelection.configure(state="disable")
     
     def createOrder(self):
+        self.orderSummary.delete(0.0, END)
         name = self.customerName.get()
+        if not name:
+            self.orderSummary.insert(0.0, "Please enter a name.")
+            return
         address = self.customerAddress.get()
+        if not address:
+            self.orderSummary.insert(0.0, "Please enter an address.")
+            return
         phone = self.customerNumber.get()
+        if not phone:
+            self.orderSummary.insert(0.0, "Please enter a phone number.")
+            return
         email = self.customerEmail.get()
-        size = self.sizeOrdered
-        toppings = self.toppingsOrdered
+        if not email:
+            self.orderSummary.insert(0.0, "Please enter an email address.")
+            return
+        try:
+            size = self.sizeOrdered
+        except:
+            self.orderSummary.insert(0.0, "Please choose a crust size.")
+            return
+        try:
+            toppings = self.toppingsOrdered
+        except:
+            toppings = "No toppings selected"
         crust = self.crust.get(ACTIVE)
         if self.drinkChecked.get():
             drink = self.drinkSelection.get()
@@ -145,7 +168,6 @@ class Application(Frame):
             drink = "N/A"
             drinkSize = "N/A"
 
-        self.orderSummary.delete(0.0, END)
         self.orderSummary.insert(0.0, "Name: " + name + "\n")
         self.orderSummary.insert(100.0, "Address: " + address + "\n")
         self.orderSummary.insert(200.0, "Phone: " + phone + "\n")

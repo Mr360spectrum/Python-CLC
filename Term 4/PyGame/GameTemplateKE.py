@@ -15,8 +15,9 @@ class Player(pygame.sprite.Sprite):
     
     def update(self):
         self.rect.x += 5
-        if self.rect.right > WIDTH:
-            # self.rect.right = 0
+        # self.rect.y += 5
+        if self.rect.left > WIDTH:
+            self.rect.right = 0
         # if self.rect.top > HEIGHT:
         #     self.rect.bottom = 0
 
@@ -25,7 +26,7 @@ class Player(pygame.sprite.Sprite):
 # Game settings
 WIDTH = 360 # Width of game window
 HEIGHT = 480 # Height of game window
-FPS = 60 # Frames per second
+FPS = 30 # Frames per second
 
 gameTitle = "A game, I guess."
 

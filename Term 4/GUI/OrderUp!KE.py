@@ -55,10 +55,12 @@ class Application(Frame):
         colx = -1
         rowx = 1
         row = 0
+        # Create a checkbox for each item
         for item in self.items:
             index = self.items.index(item)
             price = self.prices[index]
             row += 1
+            # Start on a new column after 5 rows of checkboxes have been created
             if ((row-1) % 5) == 0:
                 colx += 1
                 rowx = 1
@@ -91,6 +93,7 @@ class Application(Frame):
                     command = self.getTip,
                     ).grid(row = 9, column=0, sticky=W)
 
+        # Create entries for customer information
         Label(self, text="Customer name: ").grid(row=10, column=0, sticky=W)
         self.customerName = Entry(self, width=50)
         self.customerName.grid(row=10, column=1, columnspan=2, sticky=W)
@@ -103,7 +106,7 @@ class Application(Frame):
         self.customerNumber = Entry(self, width=50)
         self.customerNumber.grid(row=12, column=1, columnspan=2, sticky=W)
 
-        Label(self, text="Customer Email: ").grid(row=13, column=0, sticky=W)
+        Label(self, text="Customer email: ").grid(row=13, column=0, sticky=W)
         self.customerEmail = Entry(self, width=50)
         self.customerEmail.grid(row=13, column=1, columnspan=2, sticky=W)
 
@@ -134,6 +137,7 @@ class Application(Frame):
     def createOrder(self):
         self.receipt.delete(0.0, END)
         name = self.customerName.get()
+        # Show an error message if the form is lacking customer information
         if not name:
             msgBox.showerror("Error", "Customer name required.")
             return
@@ -164,28 +168,42 @@ class Application(Frame):
         # Display the order
         items = self.itemsOrdered
         prices = self.pricesOfOrdered
-        lineNum = 0.0
+        # Display customer information on the receipt
+        self.receipt.insert(0.0, "Customer:")
+        self.receipt.insert(100.0, "\n--------------")
+        self.receipt.insert(200.0, "\nName:\t\t\t" + name)
+        self.receipt.insert(300.0, "\nAddress:\t\t\t" + address)
+        self.receipt.insert(400.0, "\nPhone Number:\t\t\t" + phone)
+        self.receipt.insert(500.0, "\nEmail:\t\t\t" + email + "\n\n")
+
+        lineNum = 600.0
+        # For each item ordered, add it to the receipt with the price
         for item in items:
             index = self.itemsOrdered.index(item)
-            lineText = (item + ":\t\t\t" + "${:.2f}" + "\n").format(prices[index])
+            lineText = ("\n" + item + ":\t\t\t" + "${:.2f}").format(prices[index])
             self.receipt.insert(lineNum, lineText)
             lineNum += 100
         self.receipt.insert(lineNum, "\n\n")
         lineNum += 100
+        # Calculate the price of all items
         itemTotal = sum(prices)
+        # Calculate the tip
         tipTotal = (sum(prices) * tip)
+        # Tip percentage to be displayed
         displayTip = int(tip * 100)
-        tipLine = "Tip:\t\t\t" + "${:.2f} (" + str(displayTip) + "%)\n"
+        tipLine = "\nTip:\t\t\t" + "${:.2f} (" + str(displayTip) + "%)"
         self.receipt.insert(lineNum, tipLine.format(tipTotal))
         lineNum += 100
+        # Calculate the tax
         tax = itemTotal * 0.06
-        taxLine = "Tax: \t\t\t" + "${:.2f} (6%)\n"
+        taxLine = "\nTax: \t\t\t" + "${:.2f} (6%)"
         self.receipt.insert(lineNum, taxLine.format(tax))
         lineNum += 100
-        self.receipt.insert(lineNum, "--------------------------------------------------\n")
+        self.receipt.insert(lineNum, "\n--------------------------------------------------")
         lineNum += 100
+        # Calculate the total (all items, tip, and tax)
         total = itemTotal + tipTotal + tax
-        totalLine = "Total: \t\t\t" + "${:.2f}"
+        totalLine = "\nTotal: \t\t\t" + "${:.2f}"
         self.receipt.insert(lineNum, totalLine.format(total)) 
 
 def main():

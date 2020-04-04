@@ -201,9 +201,17 @@ class Application(Frame):
         lineNum += 100
         self.receipt.insert(lineNum, "\n--------------------------------------------------")
         lineNum += 100
+        # Total before tax
+        totalNoTaxLine = "\nTotal w/o tax:\t\t\t" + "${:.2f}"
+        self.receipt.insert(lineNum, totalNoTaxLine.format(itemTotal))
+        lineNum += 100
+        # Total after tax, no tip
+        totalNoTipLine = "\nTotal w/o tip:\t\t\t" + "${:.2f}"
+        self.receipt.insert(lineNum, totalNoTipLine.format(itemTotal + tax))
+        lineNum += 100
         # Calculate the total (all items, tip, and tax)
         total = itemTotal + tipTotal + tax
-        totalLine = "\nTotal: \t\t\t" + "${:.2f}"
+        totalLine = "\nTotal:\t\t\t" + "${:.2f}"
         self.receipt.insert(lineNum, totalLine.format(total)) 
 
 def main():

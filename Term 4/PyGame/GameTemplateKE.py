@@ -12,12 +12,15 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-    
+        self.travel = 5
+
     def update(self):
-        self.rect.x += 5
+        self.rect.x += self.travel
         # self.rect.y += 5
-        if self.rect.left > WIDTH:
-            self.rect.right = 0
+        if self.rect.right > WIDTH:
+            self.travel = self.travel * -1
+        if self.rect.left < 0:
+            self.travel = self.travel * -1
         # if self.rect.top > HEIGHT:
         #     self.rect.bottom = 0
 

@@ -10,6 +10,7 @@ WIDTH = 360 # Width of game window
 HEIGHT = 480 # Height of game window
 FPS = 30 # Frames per second
 
+# Create the game window
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -21,15 +22,18 @@ playerIMG = pygame.image.load(os.path.join(imgFolder, "playerImage.png")).conver
 # Player
 class Player(pygame.sprite.Sprite):
     def __init__(self):
+        # Create the image
         pygame.sprite.Sprite.__init__(self)
         self.image = playerIMG
         self.image.set_colorkey(BLACK)
         
         # self.color = GREEN
 
+        # Create a hitbox
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
 
+        #Get the speed at which the image moves
         self.speedx = random.randint(-100, 100)
         self.speedy = random.randint(-100, 100)
 
@@ -37,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         global screenColor
 
         # self.rect.x += self.speedx # Left or right (pixels per frame)
-        # self.rect.y += self.speedy
+        # self.rect.y += self.speedy # Up or down (pixels per frame)
 
         # Screen wrap right
         # if self.rect.left > WIDTH:
@@ -91,7 +95,6 @@ CORNFLOWERBLUE = (39, 58, 93)
 DEEPPURPLE = (105, 34, 191)
 
 colorList = [BLACK, WHITE, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, PINK, GREY, CORNFLOWERBLUE, DEEPPURPLE]
-
 screenColor = random.choice(colorList)
 
 #######################################

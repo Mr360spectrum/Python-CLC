@@ -24,12 +24,11 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         # Create the image
         pygame.sprite.Sprite.__init__(self)
-        # self.image = playerIMG
-        # self.image.set_colorkey(BLACK)
-        
-        self.color = GREEN
-        self.image = pygame.Surface((50, 50))
-        self.image.fill(GREEN)
+        # self.color = GREEN
+        # self.image = pygame.Surface((50, 50))
+        # self.image.fill(GREEN)
+        self.image = pygame.transform.scale(playerIMG, (50, 38))
+        self.image.set_colorkey(BLACK)
 
         # Create a hitbox
         self.rect = self.image.get_rect()
@@ -53,14 +52,21 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+    
+    def shoot(self):
+        bullet = Bullet(self.rect.centerx, self.rect.top + 1)
+        all_sprites.add(bullet)
+        bullets.add(bullet)
 
 class Mob(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((30, 30))
-        self.color = RED
-        self.image.fill(self.color)
-        #TODO: Enemy image
+        # self.image = pygame.Surface((30, 30))
+        # self.color = RED
+        # self.image.fill(self.color)
+        self.image = pygame.transform.scale(mobIMG, (75, 60))
+        self.image.set_colorkey(BLACK)
+
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
@@ -73,6 +79,22 @@ class Mob(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 25:
             self.rect.x = random.randrange(0, WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((10, 20))
+        self.image.fill(YELLOW)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.bottom = y
+        self.speed_y = -10
+    
+    def update(self):
+        self.rect.y += self.speed_y
+        # Kill the bullet if it goes off the screen
+        if self.rect.bottom < 0:
+            self.kill()
 
 #######################################
 
@@ -103,8 +125,21 @@ pygame.mixer.init()
 pygame.display.set_caption(gameTitle)
 clock = pygame.time.Clock()
 
+# Set up asset folders
+gameFolder = os.path.dirname(__file__)
+imgFolder = os.path.join(gameFolder, "img")
+
+# Load all game graphics
+background = pygame.image.load(os.path.join(imgFolder, "starfield.png")).convert()
+backgroundRect = background.get_rect()
+
+playerIMG = pygame.image.load(os.path.join(imgFolder, "playerShip.png")).convert()
+mobIMG = pygame.image.load(os.path.join(imgFolder, "meteor.png")).convert()
+laserIMG = pygame.image.load(os.path.join(imgFolder, "laser.png")).convert()
+
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
 
 player = Player()
 for i in range(10):
@@ -126,6 +161,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                player.shoot()
 
 #######################################
     # Update
@@ -133,11 +171,25 @@ while running:
 
     all_sprites.update()
 
+    # Detect collision between player and mobs
+    hits = pygame.sprite.spritecollide(player, mobs, False)
+    if hits:
+        running = False
+
+    # Detect collision between bullets and mobs
+    hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
+    # If mob is destroyed, create a new one
+    for hit in hits: # Remove/change if level system desired
+        m = Mob()
+        all_sprites.add(m)
+        mobs.add(m)
+
 #######################################
    # Render (draw)
 #######################################
 
     screen.fill(BLACK)
+    screen.blit(background, backgroundRect)
     all_sprites.draw(screen)
 
     # After drawing everything, flip the display

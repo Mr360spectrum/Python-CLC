@@ -76,6 +76,7 @@ class Mob(pygame.sprite.Sprite):
         self.rot = 0 # Rotation
         self.rotSpeed = random.randrange(-8, 8)
         self.lastUpdate = pygame.time.get_ticks() 
+        self.points = random.randrange(50, 100)
     
     def update(self):
         self.rotate()
@@ -115,9 +116,18 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
+def drawText(surf, text, x, y, font, size, alias, color):
+    font = pygame.font.Font(font, size)
+    textSurface = font.render(text, alias, color)
+    textRect = textSurface.get_rect()
+    textRect.midtop = (x, y)
+    surf.blit(textSurface, textRect)
+
 #######################################
 
 gameTitle = "Space Shooter"
+
+FONT_NAME = pygame.font.match_font("arial")
 
 # Colors (R, G, B)
 BLACK = (0, 0, 0)
@@ -169,10 +179,13 @@ mobs = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 
 player = Player()
+
 for i in range(10):
     m = Mob()
     all_sprites.add(m)
     mobs.add(m)
+
+score = 0
 
 # Add sprites to groups
 all_sprites.add(player)
@@ -207,6 +220,8 @@ while running:
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
     # If mob is destroyed, create a new one
     for hit in hits: # Remove/change if level system desired
+        score += hit.points - hit.radius
+        print(score)
         m = Mob()
         all_sprites.add(m)
         mobs.add(m)
@@ -218,6 +233,9 @@ while running:
     screen.fill(BLACK)
     screen.blit(background, backgroundRect)
     all_sprites.draw(screen)
+
+    drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, GREEN)
+    drawText(screen, "Lives", WIDTH-40, 10, FONT_NAME, 25, True, RED)
 
     # After drawing everything, flip the display
     # Must be the last call in the draw section

@@ -57,6 +57,7 @@ class Player(pygame.sprite.Sprite):
         bullet = Bullet(self.rect.centerx, self.rect.top + 1)
         all_sprites.add(bullet)
         bullets.add(bullet)
+        shootSound.play()
 
 class Mob(pygame.sprite.Sprite):
     def __init__(self):
@@ -123,6 +124,8 @@ def drawText(surf, text, x, y, font, size, alias, color):
     textRect.midtop = (x, y)
     surf.blit(textSurface, textRect)
 
+
+
 #######################################
 
 gameTitle = "Space Shooter"
@@ -157,10 +160,19 @@ clock = pygame.time.Clock()
 # Set up asset folders
 gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
+sndFolder = os.path.join(gameFolder, "snd")
 
 # Load all game graphics
 background = pygame.image.load(os.path.join(imgFolder, "starfield.png")).convert()
 backgroundRect = background.get_rect()
+
+# Load all game sounds
+shootSound = pygame.mixer.Sound(os.path.join(sndFolder, "Laser_Shoot5.wav"))
+explSounds = []
+for snd in ["Explosion7.wav", "Explosion8.wav"]:
+    explSounds.append(pygame.mixer.Sound(os.path.join(sndFolder, snd)))
+pygame.mixer.music.load(os.path.join(sndFolder, "TimeMachine.ogg"))
+pygame.mixer.music.set_volume(1)
 
 playerIMG = pygame.image.load(os.path.join(imgFolder, "playerShip.png")).convert()
 # mobIMG = pygame.image.load(os.path.join(imgFolder, "meteor.png")).convert()
@@ -190,6 +202,8 @@ score = 0
 # Add sprites to groups
 all_sprites.add(player)
 
+pygame.mixer.music.play(loops=-1)
+
 # Start of game loop
 running = True
 while running:
@@ -214,14 +228,15 @@ while running:
     # Detect collision between player and mobs
     hits = pygame.sprite.spritecollide(player, mobs, False, pygame.sprite.collide_circle)
     if hits:
-        running = False
+        pass
+        #running = False
 
     # Detect collision between bullets and mobs
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
     # If mob is destroyed, create a new one
     for hit in hits: # Remove/change if level system desired
         score += hit.points - hit.radius
-        print(score)
+        random.choice(explSounds).play()
         m = Mob()
         all_sprites.add(m)
         mobs.add(m)
@@ -235,7 +250,7 @@ while running:
     all_sprites.draw(screen)
 
     drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, GREEN)
-    drawText(screen, "Lives", WIDTH-40, 10, FONT_NAME, 25, True, RED)
+    # drawShieldBar(screen, 5, 20, player.shield)
 
     # After drawing everything, flip the display
     # Must be the last call in the draw section

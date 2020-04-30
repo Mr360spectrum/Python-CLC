@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottom = int(HEIGHT - (HEIGHT * 0.05))
         #Get the speed at which the image moves
         self.speedx = 0
+        self.shield = 100
 
     def update(self):
         # Player movement
@@ -124,7 +125,21 @@ def drawText(surf, text, x, y, font, size, alias, color):
     textRect.midtop = (x, y)
     surf.blit(textSurface, textRect)
 
+def newMob():
+    m = Mob()
+    all_sprites.add(m)
+    mobs.add(m)
 
+def drawShieldBar(surf, x, y, pct):
+    if pct < 0:
+        pct = 0
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 10
+    fill = (pct / 100) * BAR_LENGTH
+    outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
+    pygame.draw.rect(surf, GREEN, fill_rect)
+    pygame.draw.rect(surf, WHITE, outline_rect, 2)
 
 #######################################
 
@@ -171,6 +186,8 @@ shootSound = pygame.mixer.Sound(os.path.join(sndFolder, "Laser_Shoot5.wav"))
 explSounds = []
 for snd in ["Explosion7.wav", "Explosion8.wav"]:
     explSounds.append(pygame.mixer.Sound(os.path.join(sndFolder, snd)))
+hurtSound = pygame.mixer.Sound(os.path.join(sndFolder, "Hit_Hurt29.wav"))
+# Music
 pygame.mixer.music.load(os.path.join(sndFolder, "TimeMachine.ogg"))
 pygame.mixer.music.set_volume(1)
 
@@ -192,12 +209,10 @@ bullets = pygame.sprite.Group()
 
 player = Player()
 
-for i in range(10):
-    m = Mob()
-    all_sprites.add(m)
-    mobs.add(m)
-
 score = 0
+
+for i in range(10):
+    newMob()
 
 # Add sprites to groups
 all_sprites.add(player)
@@ -225,11 +240,15 @@ while running:
 
     all_sprites.update()
 
+
     # Detect collision between player and mobs
-    hits = pygame.sprite.spritecollide(player, mobs, False, pygame.sprite.collide_circle)
-    if hits:
-        pass
-        #running = False
+    hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
+    for hit in hits:
+        player.shield -= hit.radius * 1.25
+        hurtSound.play()
+        newMob()
+        if player.shield <= 0:
+            running = False
 
     # Detect collision between bullets and mobs
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
@@ -237,9 +256,7 @@ while running:
     for hit in hits: # Remove/change if level system desired
         score += hit.points - hit.radius
         random.choice(explSounds).play()
-        m = Mob()
-        all_sprites.add(m)
-        mobs.add(m)
+        newMob()
 
 #######################################
    # Render (draw)
@@ -250,7 +267,7 @@ while running:
     all_sprites.draw(screen)
 
     drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, GREEN)
-    # drawShieldBar(screen, 5, 20, player.shield)
+    drawShieldBar(screen, 5, 5, player.shield)
 
     # After drawing everything, flip the display
     # Must be the last call in the draw section

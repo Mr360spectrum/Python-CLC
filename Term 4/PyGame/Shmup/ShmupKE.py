@@ -37,15 +37,27 @@ class Player(pygame.sprite.Sprite):
         #Get the speed at which the image moves
         self.speedx = 0
         self.shield = 100
+        self.fuel = 100
+        self.shootDelay = 500
+        self.lastShot = pygame.time.get_ticks()
+        self.lives = 3
+        self.hidden = False
+        self.hideTimer = pygame.time.get_ticks()
 
     def update(self):
         # Player movement
+        if self.hidden and pygame.time.get_ticks() - self.hideTimer > 1000:
+            self.hidden = False
+            self.rect.centerx = WIDTH / 2
+            self.rect.bottom = int(HEIGHT -(HEIGHT * 0.05))
         self.speedx = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
             self.speedx = -8
         if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
             self.speedx = 8
+        if keystate[pygame.K_SPACE]:
+            self.shoot()
         self.rect.x += self.speedx
 
         # Binding sprite to screen
@@ -55,10 +67,22 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
     
     def shoot(self):
-        bullet = Bullet(self.rect.centerx, self.rect.top + 1)
-        all_sprites.add(bullet)
-        bullets.add(bullet)
-        shootSound.play()
+        now = pygame.time.get_ticks()
+        if now - self.lastShot > self.shootDelay:
+            self.lastShot = now
+            bullet = Bullet(self.rect.centerx, self.rect.top + 1)
+            all_sprites.add(bullet)
+            bullets.add(bullet)
+            shootSound.play()
+
+    def getHit(self, mob):
+        self.shield -= mob.radius
+    
+    def hide(self):
+        # Hide the player temporarily
+        self.hidden = True
+        self.hideTimer = pygame.time.get_ticks()
+        self.rect.center = (WIDTH / 2, HEIGHT + 200)
 
 class Mob(pygame.sprite.Sprite):
     def __init__(self):
@@ -118,6 +142,30 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self, center, size):
+        pygame.sprite.Sprite.__init__(self)
+        self.size = size
+        self.image = explosionAnim[self.size][0]
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        self.frame = 0
+        self.lastUpdate = pygame.time.get_ticks()
+        self.frameRate = 50
+
+    def update(self):
+        now = pygame.time.get_ticks()
+        if now - self.lastUpdate > self.frameRate:
+            self.lastUpdate = now
+            self.frame += 1
+            if self.frame == len(explosionAnim[self.size]):
+                self.kill()
+            else:
+                center = self.rect.center
+                self.image = explosionAnim[self.size][self.frame]
+                self.rect = self.image.get_rect()
+                self.rect.center = center
+
 def drawText(surf, text, x, y, font, size, alias, color):
     font = pygame.font.Font(font, size)
     textSurface = font.render(text, alias, color)
@@ -130,7 +178,7 @@ def newMob():
     all_sprites.add(m)
     mobs.add(m)
 
-def drawShieldBar(surf, x, y, pct):
+def drawShieldBar(surf, x, y, pct, color):
     if pct < 0:
         pct = 0
     BAR_LENGTH = 100
@@ -138,7 +186,7 @@ def drawShieldBar(surf, x, y, pct):
     fill = (pct / 100) * BAR_LENGTH
     outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
-    pygame.draw.rect(surf, GREEN, fill_rect)
+    pygame.draw.rect(surf, color, fill_rect)
     pygame.draw.rect(surf, WHITE, outline_rect, 2)
 
 #######################################
@@ -192,16 +240,38 @@ pygame.mixer.music.load(os.path.join(sndFolder, "TimeMachine.ogg"))
 pygame.mixer.music.set_volume(1)
 
 playerIMG = pygame.image.load(os.path.join(imgFolder, "playerShip.png")).convert()
+playerMiniIMG = pygame.transform.scale(playerIMG, (25, 19))
+playerMiniIMG.set_colorkey(BLACK)
 # mobIMG = pygame.image.load(os.path.join(imgFolder, "meteor.png")).convert()
 laserIMG = pygame.image.load(os.path.join(imgFolder, "laser.png")).convert()
 
 mobImages = []
 mobList = ["meteorBrown_big1.png", "meteorBrown_med1.png", 
-           "meteorBrown_med3.png", "meteorBrown_small1.png", "meteorBrown_small2.png",
-           "meteorBrown_tiny1.png"]
+        "meteorBrown_med3.png", "meteorBrown_small1.png", "meteorBrown_small2.png",
+        "meteorBrown_tiny1.png"]
+
+explosionAnim = {}
+explosionAnim['lg'] = []
+explosionAnim['sm'] = []
+explosionAnim['player'] = []
+for i in range(9):
+    filename = 'regularExplosion0{}.png'.format(i)
+    img = pygame.image.load(os.path.join(imgFolder, filename)).convert()
+    img.set_colorkey(BLACK)
+    imgLG = pygame.transform.scale(img, (75, 75))
+    explosionAnim['lg'].append(imgLG)
+    imgSM = pygame.transform.scale(img, (32, 32))
+    explosionAnim['sm'].append(imgSM)
+    filename = 'sonicExplosion0{}.png'.format(i)
+    img = pygame.image.load(os.path.join(imgFolder, filename)).convert()
+    img.set_colorkey(BLACK)
+    explosionAnim['player'].append(img)
 
 for img in mobList:
     mobImages.append(pygame.image.load(os.path.join(imgFolder, img)).convert())
+
+print("An error occurred while loading files.")
+running = False
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
@@ -230,9 +300,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                player.shoot()
 
 #######################################
     # Update
@@ -248,7 +315,14 @@ while running:
         hurtSound.play()
         newMob()
         if player.shield <= 0:
-            running = False
+            deathExpl = Explosion(player.rect.center, "player")
+            all_sprites.add(deathExpl)
+            player.hide()
+            player.lives -= 1
+            player.shield = 100
+
+    if (player.lives == 0) and not deathExpl.alive():
+        running = False
 
     # Detect collision between bullets and mobs
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
@@ -256,6 +330,8 @@ while running:
     for hit in hits: # Remove/change if level system desired
         score += hit.points - hit.radius
         random.choice(explSounds).play()
+        expl = Explosion(hit.rect.center, "lg")
+        all_sprites.add(expl)
         newMob()
 
 #######################################
@@ -267,7 +343,8 @@ while running:
     all_sprites.draw(screen)
 
     drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, GREEN)
-    drawShieldBar(screen, 5, 5, player.shield)
+    drawShieldBar(screen, 5, 5, player.shield, GREEN)
+    drawShieldBar(screen, 5, 20, player.fuel, BLUE)
 
     # After drawing everything, flip the display
     # Must be the last call in the draw section

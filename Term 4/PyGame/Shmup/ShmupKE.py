@@ -14,6 +14,8 @@ FPS = 60 # Frames per second
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+game_over = True
+
 # Set up asset folders
 # gameFolder = os.path.dirname(__file__)
 # imgFolder = os.path.join(gameFolder, "img")
@@ -199,9 +201,9 @@ class PowerUp(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.kill()
 
-def drawText(surf, text, x, y, font, size, alias, color):
+def drawText(surf, text, x, y, font, size, alias):
     font = pygame.font.Font(font, size)
-    textSurface = font.render(text, alias, color)
+    textSurface = font.render(text, alias, WHITE)
     textRect = textSurface.get_rect()
     textRect.midtop = (x, y)
     surf.blit(textSurface, textRect)
@@ -228,6 +230,21 @@ def drawLives(surf, x, y, lives, img):
         imgRect.x = x + 30 * i
         imgRect.y = y
         surf.blit(img, imgRect)
+
+def show_go_screen():
+    screen.blit(background, backgroundRect)
+    drawText(screen, gameTitle, WIDTH/2, HEIGHT/4, FONT_NAME, 64, True)
+    drawText(screen, "Use the arrow keys to move and space to fire.", WIDTH/2, HEIGHT/2, FONT_NAME, 22, True)
+    drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 4, FONT_NAME, 18, True)
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                waiting = False
 
 #######################################
 
@@ -316,26 +333,30 @@ powerUpIMG = {}
 powerUpIMG["shield"] = pygame.image.load(os.path.join(imgFolder, "shield_gold.png")).convert()
 powerUpIMG["gun"] = pygame.image.load(os.path.join(imgFolder, "bolt_gold.png")).convert()
 
-all_sprites = pygame.sprite.Group()
-mobs = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-powerUps = pygame.sprite.Group()
-
-player = Player()
-
-score = 0
-
-for i in range(10):
-    newMob()
-
-# Add sprites to groups
-all_sprites.add(player)
-
-pygame.mixer.music.play(loops=-1)
-
 # Start of game loop
 running = True
 while running:
+    if game_over:
+        show_go_screen()
+        game_over = False
+
+        all_sprites = pygame.sprite.Group()
+        mobs = pygame.sprite.Group()
+        bullets = pygame.sprite.Group()
+        powerUps = pygame.sprite.Group()
+
+        player = Player()
+
+        score = 0
+
+        for i in range(10):
+            newMob()
+
+        # Add sprites to groups
+        all_sprites.add(player)
+
+        pygame.mixer.music.play(loops=-1)
+
     clock.tick(FPS)
 
     # Process input (events)
@@ -366,7 +387,7 @@ while running:
             player.shield = 100
 
     if (player.lives == 0) and not deathExpl.alive():
-        running = False
+        game_over = True
 
     # Detect collision between bullets and mobs
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
@@ -400,7 +421,7 @@ while running:
     screen.blit(background, backgroundRect)
     
     all_sprites.draw(screen)
-    drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, GREEN)
+    drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True)
     drawShieldBar(screen, 5, 5, player.shield, GREEN)
     drawShieldBar(screen, 5, 20, player.fuel, BLUE)
     drawLives(screen, WIDTH-100, 20, player.lives, playerMiniIMG)

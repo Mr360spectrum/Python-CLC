@@ -43,6 +43,8 @@ class Player(pygame.sprite.Sprite):
         self.lives = 3
         self.hidden = False
         self.hideTimer = pygame.time.get_ticks()
+        self.power = 1
+        self.powerTime = pygame.time.get_ticks()
 
     def update(self):
         # Player movement
@@ -66,13 +68,25 @@ class Player(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
     
+        if self.power >= 2 and pygame.time.get_ticks() - self.powerTime > POWER_TIME:
+            self.power -= 1
+            self.powerTime = pygame.time.get_ticks()
+
     def shoot(self):
         now = pygame.time.get_ticks()
         if now - self.lastShot > self.shootDelay:
             self.lastShot = now
-            bullet = Bullet(self.rect.centerx, self.rect.top + 1)
-            all_sprites.add(bullet)
-            bullets.add(bullet)
+            if self.power == 1:
+                bullet = Bullet(self.rect.centerx, self.rect.top + 1)
+                all_sprites.add(bullet)
+                bullets.add(bullet)
+            if self.power >= 2:
+                bullet1 = Bullet(self.rect.left, self.rect.centery)
+                bullet2 = Bullet(self.rect.right, self.rect.centery)
+                all_sprites.add(bullet1)
+                all_sprites.add(bullet2)
+                bullets.add(bullet1)
+                bullets.add(bullet2)
             shootSound.play()
 
     def getHit(self, mob):
@@ -83,6 +97,10 @@ class Player(pygame.sprite.Sprite):
         self.hidden = True
         self.hideTimer = pygame.time.get_ticks()
         self.rect.center = (WIDTH / 2, HEIGHT + 200)
+
+    def powerUp(self):
+        self.power += 1
+        self.powerTime = pygame.time.get_ticks()
 
 class Mob(pygame.sprite.Sprite):
     def __init__(self):
@@ -166,6 +184,21 @@ class Explosion(pygame.sprite.Sprite):
                 self.rect = self.image.get_rect()
                 self.rect.center = center
 
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self, center):
+        pygame.sprite.Sprite.__init__(self)
+        self.type = random.choice(["shield", "gun"])
+        self.image = powerUpIMG[self.type]
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        self.speedy  = random.randrange(2, 5)
+
+    def update(self):
+        self.rect.y += self.speedy
+        if self.rect.top > HEIGHT:
+            self.kill()
+
 def drawText(surf, text, x, y, font, size, alias, color):
     font = pygame.font.Font(font, size)
     textSurface = font.render(text, alias, color)
@@ -188,6 +221,13 @@ def drawShieldBar(surf, x, y, pct, color):
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
     pygame.draw.rect(surf, color, fill_rect)
     pygame.draw.rect(surf, WHITE, outline_rect, 2)
+
+def drawLives(surf, x, y, lives, img):
+    for i in range(lives):
+        imgRect = img.get_rect()
+        imgRect.x = x + 30 * i
+        imgRect.y = y
+        surf.blit(img, imgRect)
 
 #######################################
 
@@ -212,6 +252,8 @@ DEEPPURPLE = (105, 34, 191)
 colorList = [BLACK, WHITE, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, PINK, GREY, CORNFLOWERBLUE, DEEPPURPLE]
 screenColor = random.choice(colorList)
 
+POWER_TIME = 10000
+
 #######################################
 
 # Creating game objects
@@ -231,18 +273,18 @@ backgroundRect = background.get_rect()
 
 # Load all game sounds
 shootSound = pygame.mixer.Sound(os.path.join(sndFolder, "Laser_Shoot5.wav"))
+powerSound = pygame.mixer.Sound(os.path.join(sndFolder, "Powerup5.wav"))
 explSounds = []
 for snd in ["Explosion7.wav", "Explosion8.wav"]:
     explSounds.append(pygame.mixer.Sound(os.path.join(sndFolder, snd)))
 hurtSound = pygame.mixer.Sound(os.path.join(sndFolder, "Hit_Hurt29.wav"))
 # Music
 pygame.mixer.music.load(os.path.join(sndFolder, "TimeMachine.ogg"))
-pygame.mixer.music.set_volume(1)
+pygame.mixer.music.set_volume(0.3)
 
 playerIMG = pygame.image.load(os.path.join(imgFolder, "playerShip.png")).convert()
 playerMiniIMG = pygame.transform.scale(playerIMG, (25, 19))
 playerMiniIMG.set_colorkey(BLACK)
-# mobIMG = pygame.image.load(os.path.join(imgFolder, "meteor.png")).convert()
 laserIMG = pygame.image.load(os.path.join(imgFolder, "laser.png")).convert()
 
 mobImages = []
@@ -270,12 +312,14 @@ for i in range(9):
 for img in mobList:
     mobImages.append(pygame.image.load(os.path.join(imgFolder, img)).convert())
 
-print("An error occurred while loading files.")
-running = False
+powerUpIMG = {}
+powerUpIMG["shield"] = pygame.image.load(os.path.join(imgFolder, "shield_gold.png")).convert()
+powerUpIMG["gun"] = pygame.image.load(os.path.join(imgFolder, "bolt_gold.png")).convert()
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
+powerUps = pygame.sprite.Group()
 
 player = Player()
 
@@ -333,6 +377,20 @@ while running:
         expl = Explosion(hit.rect.center, "lg")
         all_sprites.add(expl)
         newMob()
+        if random.random() > 0.9:
+            powerUp = PowerUp(hit.rect.center)
+            all_sprites.add(powerUp)
+            powerUps.add(powerUp)
+
+    hits = pygame.sprite.spritecollide(player, powerUps, True)
+    for hit in hits:
+        if hit.type == "shield":
+            player.shield += random.randrange(10, 30)
+            if player.shield >= 100:
+                player.shield = 100
+        if hit.type == "gun":
+            player.powerUp()
+        powerSound.play()
 
 #######################################
    # Render (draw)
@@ -340,11 +398,12 @@ while running:
 
     screen.fill(BLACK)
     screen.blit(background, backgroundRect)
+    
     all_sprites.draw(screen)
-
     drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, GREEN)
     drawShieldBar(screen, 5, 5, player.shield, GREEN)
     drawShieldBar(screen, 5, 20, player.fuel, BLUE)
+    drawLives(screen, WIDTH-100, 20, player.lives, playerMiniIMG)
 
     # After drawing everything, flip the display
     # Must be the last call in the draw section

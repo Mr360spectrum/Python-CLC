@@ -202,9 +202,9 @@ class PowerUp(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.kill()
 
-def drawText(surf, text, x, y, font, size, alias):
+def drawText(surf, text, x, y, font, size, alias, color):
     font = pygame.font.Font(font, size)
-    textSurface = font.render(text, alias, WHITE)
+    textSurface = font.render(text, alias, color)
     textRect = textSurface.get_rect()
     textRect.midtop = (x, y)
     surf.blit(textSurface, textRect)
@@ -236,10 +236,9 @@ def openScoreFile(mode):
     """Opens the high score file"""
     try:
         file = open("scores.txt", mode)
-        print(file.readlines())
         return file
     except IOError as e:
-        drawText(screen, "No high scores found.", WIDTH/2, HEIGHT * 3 /4, FONT_NAME, 20, True)
+        drawText(screen, "No high scores found.", WIDTH/2, HEIGHT * 3 /4, FONT_NAME, 20, True, WHITE)
 
 def getNextLine(file):
     line = file.readline()
@@ -248,17 +247,21 @@ def getNextLine(file):
 
 def getHighScores():
     file = openScoreFile("r")
-    # count = str(len(file.readlines()))
-    # drawText(screen, count, WIDTH/2, HEIGHT /1.25, FONT_NAME, 20, True)
-    highScore = getNextLine(file)
-    drawText(screen, highScore, WIDTH/2, HEIGHT / 1.25, FONT_NAME, 20, True)
+    for i in range(3):
+        highScore = getNextLine(file)
+        drawText(screen, highScore, WIDTH/2, HEIGHT*3/4.1 + (i*30), FONT_NAME, 20, True, PINK)
+    file.close()
+    
+
+# TODO: Write new high scores to disk by taking all three high scores from the file, adding them to a list, comparing them,
+# removing the lowest and adding the new high score to it's correct place, then writing each item to the file
 
 def show_go_screen():
     screen.blit(background, backgroundRect)
-    drawText(screen, gameTitle, WIDTH/2, HEIGHT/4, FONT_NAME, 64, True)
-    drawText(screen, "Use the arrow keys to move and space to fire.", WIDTH/2, HEIGHT/2, FONT_NAME, 22, True)
-    drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 5, FONT_NAME, 18, True)
-    drawText(screen, "High Scores:", WIDTH/2, HEIGHT * 3 / 4.5, FONT_NAME, 20, True)
+    drawText(screen, gameTitle, WIDTH/2, HEIGHT/4, FONT_NAME, 64, True, WHITE)
+    drawText(screen, "Use the arrow keys to move and space to fire.", WIDTH/2, HEIGHT/2, FONT_NAME, 22, True, WHITE)
+    drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 5, FONT_NAME, 18, True, WHITE)
+    drawText(screen, "High Scores:", WIDTH/2, HEIGHT * 3 / 4.5, FONT_NAME, 20, True, WHITE)
     getHighScores()
     pygame.display.flip()
     waiting = True
@@ -444,7 +447,7 @@ while running:
     screen.blit(background, backgroundRect)
     
     all_sprites.draw(screen)
-    drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True)
+    drawText(screen, str(score), WIDTH/2, 10, FONT_NAME, 35, True, WHITE)
     drawShieldBar(screen, 5, 5, player.shield, GREEN)
     drawShieldBar(screen, 5, 20, player.fuel, BLUE)
     drawLives(screen, WIDTH-100, 20, player.lives, playerMiniIMG)

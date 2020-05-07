@@ -4,6 +4,7 @@
 import pygame
 import random
 import os
+import sys
 
 # Game settings
 WIDTH = 480 # Width of game window
@@ -231,11 +232,34 @@ def drawLives(surf, x, y, lives, img):
         imgRect.y = y
         surf.blit(img, imgRect)
 
+def openScoreFile(mode):
+    """Opens the high score file"""
+    try:
+        file = open("scores.txt", mode)
+        print(file.readlines())
+        return file
+    except IOError as e:
+        drawText(screen, "No high scores found.", WIDTH/2, HEIGHT * 3 /4, FONT_NAME, 20, True)
+
+def getNextLine(file):
+    line = file.readline()
+    line = line.strip("\n")
+    return line
+
+def getHighScores():
+    file = openScoreFile("r")
+    # count = str(len(file.readlines()))
+    # drawText(screen, count, WIDTH/2, HEIGHT /1.25, FONT_NAME, 20, True)
+    highScore = getNextLine(file)
+    drawText(screen, highScore, WIDTH/2, HEIGHT / 1.25, FONT_NAME, 20, True)
+
 def show_go_screen():
     screen.blit(background, backgroundRect)
     drawText(screen, gameTitle, WIDTH/2, HEIGHT/4, FONT_NAME, 64, True)
     drawText(screen, "Use the arrow keys to move and space to fire.", WIDTH/2, HEIGHT/2, FONT_NAME, 22, True)
-    drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 4, FONT_NAME, 18, True)
+    drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 5, FONT_NAME, 18, True)
+    drawText(screen, "High Scores:", WIDTH/2, HEIGHT * 3 / 4.5, FONT_NAME, 20, True)
+    getHighScores()
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -371,7 +395,6 @@ while running:
 #######################################
 
     all_sprites.update()
-
 
     # Detect collision between player and mobs
     hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)

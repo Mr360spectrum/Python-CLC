@@ -17,6 +17,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 game_over = True
 
+score = 0
+
 # Set up asset folders
 # gameFolder = os.path.dirname(__file__)
 # imgFolder = os.path.join(gameFolder, "img")
@@ -252,6 +254,28 @@ def getHighScores():
         drawText(screen, highScore, WIDTH/2, HEIGHT*3/4.1 + (i*30), FONT_NAME, 20, True, PINK)
     file.close()
     
+def addNewHighScore(newScore):
+    file = openScoreFile("r+")
+    lines = file.readlines()
+    file.seek(0, 0)
+    scoreList = []
+    for i in range(len(lines)):
+        line = file.readline()
+        line = line.rstrip()
+        line = int(line)
+        scoreList.append(line)
+    scoreList.append(newScore)
+    scoreList.sort()
+    if len(scoreList) > 3:
+        scoreList.pop(0)
+    if scoreList:
+        file.seek(0, 0)
+        file.truncate()
+        for score in scoreList:
+            file.writelines(str(score) + "\n")
+    else:
+        file.writelines(str(newScore))
+    file.close()
 
 # TODO: Write new high scores to disk by taking all three high scores from the file, adding them to a list, comparing them,
 # removing the lowest and adding the new high score to it's correct place, then writing each item to the file
@@ -263,6 +287,7 @@ def show_go_screen():
     drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 5, FONT_NAME, 18, True, WHITE)
     drawText(screen, "High Scores:", WIDTH/2, HEIGHT * 3 / 4.5, FONT_NAME, 20, True, WHITE)
     getHighScores()
+    addNewHighScore(score)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -373,8 +398,6 @@ while running:
         powerUps = pygame.sprite.Group()
 
         player = Player()
-
-        score = 0
 
         for i in range(10):
             newMob()

@@ -18,6 +18,13 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 game_over = True
 score = 0
 
+# Creates scores.txt if it does not already exist
+# Mode "a" opens in "append" mode, which is a write mode that puts the cursor at the end of the file.
+# However, it is only used here in order to create the file if it does not exist.
+# The file will be closed immediately after being opened, meaning that it will not sit in memory
+# or have anything written to it.
+open("scores.txt", "a").close()
+
 # Set up asset folders
 # gameFolder = os.path.dirname(__file__)
 # imgFolder = os.path.join(gameFolder, "img")
@@ -256,6 +263,8 @@ def getHighScores():
     # Append each line to highScores
     for i in range(3):
         highScore = getNextLine(file)
+        if not highScore:
+            break
         highScore = highScore.rstrip()
         highScores.append(int(highScore))
     # Sorts highScores in descending order
@@ -269,6 +278,8 @@ def getHighScores():
 def addNewHighScore(newScore):
     """Add a new high score to scores.txt if it is greater than any of the three preexisting values."""
     file = openScoreFile("r+") # Open the file in "read and write" mode
+    if not file:
+        return
     lines = file.readlines() # Gets all lines in the file as a list
     file.seek(0, 0) # Move the cursor to the beginning to the file
     scoreList = []
@@ -298,7 +309,6 @@ def addNewHighScore(newScore):
     file.close()
 
 def show_go_screen():
-    
     screen.blit(background, backgroundRect)
     drawText(screen, gameTitle, WIDTH/2, HEIGHT/4, FONT_NAME, 64, True, WHITE)
     drawText(screen, "Use the arrow keys to move and space to fire.", WIDTH/2, HEIGHT/2, FONT_NAME, 22, True, WHITE)

@@ -16,7 +16,6 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 game_over = True
-
 score = 0
 
 # Set up asset folders
@@ -235,7 +234,7 @@ def drawLives(surf, x, y, lives, img):
         surf.blit(img, imgRect)
 
 def openScoreFile(mode):
-    """Opens the high score file"""
+    """Opens the high score file and returns it."""
     try:
         file = open("scores.txt", mode)
         return file
@@ -243,51 +242,69 @@ def openScoreFile(mode):
         drawText(screen, "No high scores found.", WIDTH/2, HEIGHT * 3 /4, FONT_NAME, 20, True, WHITE)
 
 def getNextLine(file):
+    """Returns the next line in the file.
+    
+    The cursor will remain where it is when the function is finished."""
     line = file.readline()
     line = line.strip("\n")
     return line
 
 def getHighScores():
-    file = openScoreFile("r")
+    """Displays the high scores listed in scores.txt."""
+    file = openScoreFile("r") # Open the file in "read-only" mode
+    highScores = []
+    # Append each line to highScores
     for i in range(3):
         highScore = getNextLine(file)
-        drawText(screen, highScore, WIDTH/2, HEIGHT*3/4.1 + (i*30), FONT_NAME, 20, True, PINK)
+        highScore = highScore.rstrip()
+        highScores.append(int(highScore))
+    # Sorts highScores in descending order
+    highScores.sort(reverse = True)
+    i = 0
+    for score in highScores:
+        drawText(screen, str(score), WIDTH/2, HEIGHT*3/4.1 + (i*30), FONT_NAME, 20, True, PINK)
+        i += 1
     file.close()
     
 def addNewHighScore(newScore):
-    file = openScoreFile("r+")
-    lines = file.readlines()
-    file.seek(0, 0)
+    """Add a new high score to scores.txt if it is greater than any of the three preexisting values."""
+    file = openScoreFile("r+") # Open the file in "read and write" mode
+    lines = file.readlines() # Gets all lines in the file as a list
+    file.seek(0, 0) # Move the cursor to the beginning to the file
     scoreList = []
+    # For each line, clear whitespace and newline characters, convert the value to an integer, and add it to scoreList
     for i in range(len(lines)):
         line = file.readline()
         line = line.rstrip()
         line = int(line)
         scoreList.append(line)
+    # Add the new score to scoreList
     scoreList.append(newScore)
     scoreList.sort()
-    if len(scoreList) > 3:
+    # If scoreList has more than 3 items in it, remove the first item (which is the lowest value after the list is sorted)
+    if len(scoreList) == 4:
         scoreList.pop(0)
+    elif len(scoreList) > 4:
+        print("What?? That wasn't supposed to happen. :/")
     if scoreList:
+        # Clear everything in the file
         file.seek(0, 0)
         file.truncate()
+        # Add each high score to the file
         for score in scoreList:
             file.writelines(str(score) + "\n")
     else:
         file.writelines(str(newScore))
     file.close()
 
-# TODO: Write new high scores to disk by taking all three high scores from the file, adding them to a list, comparing them,
-# removing the lowest and adding the new high score to it's correct place, then writing each item to the file
-
 def show_go_screen():
+    
     screen.blit(background, backgroundRect)
     drawText(screen, gameTitle, WIDTH/2, HEIGHT/4, FONT_NAME, 64, True, WHITE)
     drawText(screen, "Use the arrow keys to move and space to fire.", WIDTH/2, HEIGHT/2, FONT_NAME, 22, True, WHITE)
     drawText(screen, "Press a key to begin", WIDTH/2, HEIGHT* 3 / 5, FONT_NAME, 18, True, WHITE)
     drawText(screen, "High Scores:", WIDTH/2, HEIGHT * 3 / 4.5, FONT_NAME, 20, True, WHITE)
     getHighScores()
-    addNewHighScore(score)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -389,6 +406,9 @@ powerUpIMG["gun"] = pygame.image.load(os.path.join(imgFolder, "bolt_gold.png")).
 running = True
 while running:
     if game_over:
+
+        addNewHighScore(score)
+        score = 0
         show_go_screen()
         game_over = False
 
@@ -447,7 +467,7 @@ while running:
         expl = Explosion(hit.rect.center, "lg")
         all_sprites.add(expl)
         newMob()
-        if random.random() > 0.9:
+        if random.random() > 0.98:
             powerUp = PowerUp(hit.rect.center)
             all_sprites.add(powerUp)
             powerUps.add(powerUp)

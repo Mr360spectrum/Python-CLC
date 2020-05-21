@@ -322,7 +322,7 @@ def show_go_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYDOWN:
                 waiting = False
 
 #######################################
@@ -445,6 +445,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        keystate = pygame.key.get_pressed()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                game_over = True
 
 #######################################
     # Update

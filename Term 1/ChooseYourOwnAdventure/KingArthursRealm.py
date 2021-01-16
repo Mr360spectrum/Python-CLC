@@ -1,6 +1,8 @@
 # Karter Ence, Demetrius Whites, Kaden Marden, Austin Daybell
 # King Arthur's Realm - Choose Your Own Adventure
 # 10/15/2019
+
+# The story of "King Arthur's Realm" was created by mythologyteacher.com
 import time
 
 def card_p1():
